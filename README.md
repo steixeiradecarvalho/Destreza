@@ -6,7 +6,7 @@ PWA em português brasileiro para praticar digitação no celular. Piloto local,
 
 Versão publicada: https://steixeiradecarvalho.github.io/Destreza/.
 
-Esta versão é a **F0**, com preparação do espaço, preferências e infraestrutura PWA. As lições ainda não estão implementadas. Consulte [PLANO.md](PLANO.md) e [DECISOES.md](DECISOES.md).
+A **F0** foi validada por Sergio no celular. A versão **F1 (0.2.0)** adiciona teclado de treino, níveis 1–6, calibração, resultados e registro local de toques. Consulte [PLANO.md](PLANO.md) e [DECISOES.md](DECISOES.md).
 
 ## Executar
 
@@ -53,4 +53,16 @@ A configuração segue o [guia de implantação do Vite](https://vite.dev/guide/
 
 ## Dados
 
-Na F0, apenas preferências e versão do aceite são guardadas no IndexedDB. Sem analytics, fontes externas ou envio de conteúdo pessoal. Arquivos do app são servidos pelo GitHub Pages. Limpar os dados do navegador pode apagar as preferências e o histórico futuro. O app não faz alegações médicas.
+Preferências, versão do aceite, calibração, sessões, tentativas e toques ficam no IndexedDB local. A migração da F0 preserva as preferências. Sem analytics, fontes externas ou envio de conteúdo pessoal. Arquivos do app são servidos pelo GitHub Pages. Limpar os dados do navegador pode apagar as preferências e o histórico futuro. O app não faz alegações médicas.
+
+## Teste da F1 no celular
+
+1. Abrir com internet e, se aparecer, tocar em **Atualizar agora**. Confirmar que existe **Treino de hoje**.
+2. Em **Ajustar meu conforto**, escolher tamanho das teclas (100–160%) e marca do toque. Som e vibração são opcionais.
+3. Tocar em **Treino de hoje → Começar a lição**; fazer os cinco toques de calibração e começar a lição.
+4. Usar **Mais à esquerda**, **Mais à direita** e **Mostrar a tecla** para encontrar as letras. O espaço fica sempre visível. O treino também aceita teclado físico.
+5. Concluir aquecimento, prática e desafio. Conferir **Lição e toques salvos neste aparelho**, voltar ao início e verificar **Últimas lições**.
+6. Fechar, ativar modo avião e reabrir. O histórico deve continuar disponível.
+7. Relatar se o teclado ficou confortável e se a navegação lateral dificultou encontrar letras. Essa validação encerra o portão da F1; a F2 ainda não foi iniciada.
+
+Uma pausa pode ser retomada enquanto a tela estiver aberta. **Guardar e sair** conserva os toques e marca a lição como interrompida. Fechar durante uma lição não a conclui; o próximo treino começa do início.

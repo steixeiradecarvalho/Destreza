@@ -1,52 +1,97 @@
-import { expect, test } from '@playwright/test';
-test('preparação persiste com texto a 200%, tema e mão escolhidos', async ({ page }) => {
-  await page.goto('./');
-  await page.getByRole('button', { name: 'Entendi e quero preparar meu espaço' }).click();
-  await page.getByLabel('Tamanho do texto').fill('200');
-  await page.getByLabel('Alto contraste', { exact: true }).check();
-  await page.getByLabel('Esquerda', { exact: true }).check();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.getByRole('button', { name: 'Salvar e continuar' }).click();
-  await expect(page.getByRole('heading', { name: 'Seu espaço está pronto.' })).toBeVisible();
+import { expect, test } from "@playwright/test";
+test("preparação persiste com texto a 200%, tema e mão escolhidos", async ({
+  page,
+}) => {
+  await page.goto("./");
+  await page
+    .getByRole("button", { name: "Entendi e quero preparar meu espaço" })
+    .click();
+  await page.getByLabel("Tamanho do texto").fill("200");
+  await page.getByLabel("Alto contraste", { exact: true }).check();
+  await page.getByLabel("Esquerda", { exact: true }).check();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await page.getByRole("button", { name: "Salvar e continuar" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Seu espaço está pronto." }),
+  ).toBeVisible();
   await page.reload();
-  await page.getByRole('button', { name: 'Ajustar meu conforto' }).click();
-  await expect(page.getByLabel('Tamanho do texto')).toHaveValue('200');
-  await expect(page.getByLabel('Esquerda', { exact: true })).toBeChecked();
-  await expect(page.getByLabel('Alto contraste', { exact: true })).toBeChecked();
+  await page.getByRole("button", { name: "Ajustar meu conforto" }).click();
+  await expect(page.getByLabel("Tamanho do texto")).toHaveValue("200");
+  await expect(page.getByLabel("Esquerda", { exact: true })).toBeChecked();
+  await expect(
+    page.getByLabel("Alto contraste", { exact: true }),
+  ).toBeChecked();
   await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({ path: 'test-results/conforto-200.png', fullPage: true });
+  await page.screenshot({
+    path: "test-results/conforto-200.png",
+    fullPage: true,
+  });
 });
-test('manifesto tem escopo correto e app reabre sem conexão', async ({ page, context }) => {
-  await page.goto('./');
-  const manifest = await (await page.request.get('manifest.webmanifest')).json();
-  expect(manifest.start_url).toBe('/Destreza/');
-  expect(manifest.scope).toBe('/Destreza/');
-  await expect(page.getByRole('status')).toContainText('Pronto para abrir sem internet.', { timeout: 20000 });
-  await page.evaluate(async () => { await navigator.serviceWorker.ready; });
-  await page.getByRole('button', { name: 'Entendi e quero preparar meu espaço' }).click();
-  await page.getByLabel('Esquerda', { exact: true }).check();
-  await page.getByRole('button', { name: 'Salvar e continuar' }).click();
-  await expect(page.getByRole('heading', { name: 'Seu espaço está pronto.' })).toBeVisible();
-  await expect(page.getByRole('status')).toContainText('Preferências salvas neste aparelho.');
+test("manifesto tem escopo correto e app reabre sem conexão", async ({
+  page,
+  context,
+}) => {
+  await page.goto("./");
+  const manifest = await (
+    await page.request.get("manifest.webmanifest")
+  ).json();
+  expect(manifest.start_url).toBe("/Destreza/");
+  expect(manifest.scope).toBe("/Destreza/");
+  await expect(page.getByRole("status")).toContainText(
+    "Pronto para abrir sem internet.",
+    { timeout: 20000 },
+  );
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+  });
+  await page
+    .getByRole("button", { name: "Entendi e quero preparar meu espaço" })
+    .click();
+  await page.getByLabel("Esquerda", { exact: true }).check();
+  await page.getByRole("button", { name: "Salvar e continuar" }).click();
+  await expect(
+    page.getByRole("heading", { name: "Seu espaço está pronto." }),
+  ).toBeVisible();
+  await expect(page.getByRole("status")).toContainText(
+    "Preferências salvas neste aparelho.",
+  );
   await page.close();
   await context.setOffline(true);
   const reopened = await context.newPage();
-  await reopened.goto('./');
-  await expect(reopened.getByRole('heading', { name: 'Seu espaço está pronto.' })).toBeVisible();
-  await reopened.getByRole('button', { name: 'Ajustar meu conforto' }).click();
-  await expect(reopened.getByLabel('Esquerda', { exact: true })).toBeChecked();
+  await reopened.goto("./");
+  await expect(
+    reopened.getByRole("heading", { name: "Seu espaço está pronto." }),
+  ).toBeVisible();
+  await reopened.getByRole("button", { name: "Ajustar meu conforto" }).click();
+  await expect(reopened.getByLabel("Esquerda", { exact: true })).toBeChecked();
 });
-test('navegação e recursos não enviam requisições a terceiros', async ({ page }) => {
+test("navegação e recursos não enviam requisições a terceiros", async ({
+  page,
+}) => {
   const external: string[] = [];
-  page.on('request', req => { if (!req.url().startsWith('http://127.0.0.1:4173/')) external.push(req.url()); });
-  await page.goto('./');
-  await page.screenshot({ path: 'test-results/boas-vindas.png', fullPage: true });
-  await page.getByRole('button', { name: 'Entendi e quero preparar meu espaço' }).click();
-  await page.getByRole('button', { name: 'Salvar e continuar' }).click();
-  await page.getByRole('button', { name: 'Como instalar' }).click();
-  await expect(page.getByRole('heading', { name: 'No iPhone' })).toBeVisible();
-  await page.getByRole('button', { name: 'Voltar ao início' }).click();
-  await page.getByRole('button', { name: 'Sobre o Destreza' }).click();
-  await expect(page.getByText('É uma prática de habilidade.', { exact: false })).toBeVisible();
+  page.on("request", (req) => {
+    if (!req.url().startsWith("http://127.0.0.1:4173/"))
+      external.push(req.url());
+  });
+  await page.goto("./");
+  await page.screenshot({
+    path: "test-results/boas-vindas.png",
+    fullPage: true,
+  });
+  await page
+    .getByRole("button", { name: "Entendi e quero preparar meu espaço" })
+    .click();
+  await page.getByRole("button", { name: "Salvar e continuar" }).click();
+  await page.getByRole("button", { name: "Como instalar" }).click();
+  await expect(page.getByRole("heading", { name: "No iPhone" })).toBeVisible();
+  await page.getByRole("button", { name: "Voltar ao início" }).click();
+  await page.getByRole("button", { name: "Sobre o Destreza" }).click();
+  await expect(
+    page.getByText("É uma prática de habilidade.", { exact: false }),
+  ).toBeVisible();
   expect(external).toEqual([]);
 });

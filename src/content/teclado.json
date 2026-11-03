@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "levels": [
+    {
+      "id": 1,
+      "warmup": "aeiouaeiou",
+      "core": "qwertyuiopasdfghjklçzxcvbnm",
+      "challenge": "aeioumrs"
+    },
+    {
+      "id": 2,
+      "warmup": "aeiouaeiou",
+      "core": "a e i o u ou eu oi ai ia ao",
+      "challenge": "eu oi ou"
+    },
+    {
+      "id": 3,
+      "warmup": "a e i o u ",
+      "core": "a e o s r i n d m t de se em no sim dia",
+      "challenge": "o dia e nosso"
+    },
+    {
+      "id": 4,
+      "warmup": "aerosindmt",
+      "core": "qwertyuiop asdfghjklç zxcvbnm sol luz voz paz",
+      "challenge": "bom dia para voce"
+    },
+    {
+      "id": 5,
+      "warmup": "sol luz oi",
+      "core": "de que com para no na se em um uma de que com para",
+      "challenge": "com tempo e calma"
+    },
+    {
+      "id": 6,
+      "warmup": "de que com",
+      "core": "casa vida mesa rua sol dia amor neto livro amigo cafe",
+      "challenge": "um dia de cada vez"
+    }
+  ]
+}
