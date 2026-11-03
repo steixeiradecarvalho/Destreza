@@ -63,7 +63,7 @@ Preferências, versão do aceite, calibração, sessões, tentativas, toques e r
 4. Usar **Mais à esquerda**, **Mais à direita** e **Mostrar a tecla** para encontrar as letras. O espaço fica sempre visível. O treino também aceita teclado físico.
 5. Concluir aquecimento, prática e desafio. Conferir **Lição e toques salvos neste aparelho**, voltar ao início e verificar **Últimas lições**.
 6. Fechar, ativar modo avião e reabrir. O histórico deve continuar disponível.
-7. Relatar se o teclado ficou confortável e se a navegação lateral dificultou encontrar letras. Essa validação encerra o portão da F1; a F2 ainda não foi iniciada.
+7. Relatar se o teclado ficou confortável e se a navegação lateral dificultou encontrar letras. A F1 foi aprovada por Sergio; este roteiro continua útil para revisar a regressão do teclado de treino.
 
 Uma pausa pode ser retomada enquanto a tela estiver aberta. **Guardar e sair** conserva os toques e marca a lição como interrompida. Fechar durante uma lição não a conclui; o próximo treino começa do início.
 

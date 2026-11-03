@@ -6,7 +6,7 @@ Responsabilidade técnica: agente de desenvolvimento. Validação da experiênci
 | --- | --- | --- |
 | F0 Base | Concluída; Sergio confirmou abertura offline e preferências preservadas | Build/testes aprovados, publicação, instalação e abertura offline no celular |
 | F1 Teclado 1–6 | Concluída; resultado salvo e conforto confirmados por Sergio | Lição completa com dados salvos e conforto validado |
-| F2 Teclado nativo e níveis 7–12 | Implementada; publicação em preparação | Referência repetível e exportável |
+| F2 Teclado nativo e níveis 7–12 | Publicada e verificada; aguarda teste e exportação no celular | Referência repetível e exportável |
 | F3 Mãos 1, 2, 3 e 8 | Não iniciada | Demonstração, ensaio, três dificuldades por exercício |
 | F4 Adaptação e sessão | Não iniciada | Sessão diária completa sem intervenção manual |
 | F5 Painel, diário e demais exercícios | Não iniciada | Quatro visões com dados reais e conferência de sete dias simulados |
@@ -97,7 +97,7 @@ Portão anterior aprovado por Sergio: resultado da lição salvo; teclas e naveg
 - [x] Migração v2 → v3 preservando sessões e preferências anteriores.
 - [x] Testes de lógica, migração, exportação e fluxos dos seis novos níveis.
 - [x] Verificação final de produção e revisão visual da versão 0.3.0.
-- [ ] Publicação pelo GitHub Actions e verificação do site público.
+- [x] Publicação pelo GitHub Actions e verificação do site público.
 - [ ] Sergio: completar referência no teclado real, repetir com as mesmas frases e exportar os arquivos no celular.
 
 Os exercícios de Mãos (F3) não foram iniciados. A F2 só encerra após o portão no celular.
@@ -110,3 +110,9 @@ Os exercícios de Mãos (F3) não foram iniciados. A F2 só encerra após o port
 - A regressão de Backspace no nível 7 foi corrigida preservando o nome da tecla física. Retry de gravação nativa conserva o rascunho e não reinicia o teste.
 - Emulação valida o campo e a lógica; teclado visual do sistema e sugestões ainda precisam do teste no aparelho.
 - Primeira execução remota da F2: 13 testes unitários e build aprovados; dois testes de navegador falharam por sincronização de entrada e navegação no cenário de relógio simulado a 200%. Os downloads e o prazo de 120 segundos já haviam passado. Ajustadas as esperas pela gravação e a navegação por teclado nesse cenário; foco de títulos nativos passa a ocorrer antes da pintura. `CI=true npm run test:e2e`: 14 aprovados após as correções.
+
+## Publicação da F2 confirmada — 2026-11-03
+- Versão 0.3.0, commit de aplicação `36267e1`; https://github.com/steixeiradecarvalho/Destreza/actions/runs/41725409332 — verificação e implantação aprovadas (13 unitários + 14 de navegador).
+- Site público corresponde ao build local (`index-c_F_7ok8.js`), com HTTP 200.
+- Conferência pública em Chromium com emulação 360×640 e relógio controlado: teste encerrou com 120.000 ms registrados, sem erros para texto correto; downloads JSON e CSV foram lidos e validados; histórico reapareceu offline. Nenhum erro JavaScript observado.
+- A validação no teclado visual do celular permanece com Sergio: concluir a referência, repetir o início e abrir os arquivos exportados. F3 não iniciada.
