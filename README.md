@@ -4,6 +4,8 @@
 
 PWA em português brasileiro para praticar digitação no celular. Piloto local, sem conta ou backend. A especificação está em [Destreza — Especificação do Piloto.md](<Destreza — Especificação do Piloto.md>).
 
+Versão publicada: https://steixeiradecarvalho.github.io/Destreza/.
+
 Esta versão é a **F0**, com preparação do espaço, preferências e infraestrutura PWA. As lições ainda não estão implementadas. Consulte [PLANO.md](PLANO.md) e [DECISOES.md](DECISOES.md).
 
 ## Executar

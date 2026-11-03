@@ -4,7 +4,7 @@ Responsabilidade técnica: agente de desenvolvimento. Validação da experiênci
 
 | Fase | Estado | Portão |
 | --- | --- | --- |
-| F0 Base | Build e testes locais aprovados; publicação em preparação; aguarda teste no celular | Build/testes aprovados, publicação, instalação e abertura offline no celular |
+| F0 Base | Publicada e verificada; aguarda teste de Sergio no celular | Build/testes aprovados, publicação, instalação e abertura offline no celular |
 | F1 Teclado 1–6 | Não iniciada | Lição completa com dados salvos e conforto validado |
 | F2 Teclado nativo e níveis 7–12 | Não iniciada | Referência repetível e exportável |
 | F3 Mãos 1, 2, 3 e 8 | Não iniciada | Demonstração, ensaio, três dificuldades por exercício |
@@ -23,8 +23,8 @@ Responsabilidade técnica: agente de desenvolvimento. Validação da experiênci
 - [x] Instalar dependências e gerar lockfile.
 - [x] Aprovar TypeScript/build, Vitest e Playwright; revisar capturas de tela.
 - [x] Confirmar Pages com origem GitHub Actions.
-- [ ] Commit/push da F0.
-- [ ] Confirmar implantação e abrir endereço público.
+- [x] Commit/push da F0.
+- [x] Confirmar implantação e abrir endereço público.
 - [ ] Sergio: instalar, fechar, ativar modo avião e reabrir no celular.
 - [ ] Testar armazenamento após atualização, TalkBack/VoiceOver e desempenho no aparelho.
 
@@ -46,3 +46,9 @@ F0 permanece aberta. F1 só inicia após o portão, conforme a especificação.
 - Capturas de boas-vindas e conforto a 200% revisadas; título de feedback encurtado para facilitar leitura ampliada.
 - Teste no aparelho real, leitores de tela e comportamento após troca de versão seguem pendentes.
 - Primeira execução remota: build e testes unitários aprovados; teste offline fechou a página antes da conclusão de `Salvar`. Corrigido para aguardar a confirmação de persistência antes de fechar. Três fluxos aprovados novamente com `CI=true` local.
+
+## Publicação confirmada — 2026-11-03
+- Aplicativo: https://steixeiradecarvalho.github.io/Destreza/
+- GitHub Actions: https://github.com/steixeiradecarvalho/Destreza/actions/runs/41685423299 — verificação e implantação aprovadas, commit `5389f17`.
+- Site público retornou HTTP 200; teste em Chromium com emulação móvel confirmou carregamento, gravação e reabertura offline em nova página. Nenhum erro JavaScript observado na página inicial.
+- A aprovação técnica não encerra o portão F0: faltam instalação e reabertura em modo avião no celular de Sergio. F1 permanece não iniciada.
