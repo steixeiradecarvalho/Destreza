@@ -5,7 +5,7 @@ Responsabilidade técnica: agente de desenvolvimento. Validação da experiênci
 | Fase | Estado | Portão |
 | --- | --- | --- |
 | F0 Base | Concluída; Sergio confirmou abertura offline e preferências preservadas | Build/testes aprovados, publicação, instalação e abertura offline no celular |
-| F1 Teclado 1–6 | Implementada; validação e publicação em andamento | Lição completa com dados salvos e conforto validado |
+| F1 Teclado 1–6 | Publicada e verificada; aguarda lição completa de Sergio no celular | Lição completa com dados salvos e conforto validado |
 | F2 Teclado nativo e níveis 7–12 | Não iniciada | Referência repetível e exportável |
 | F3 Mãos 1, 2, 3 e 8 | Não iniciada | Demonstração, ensaio, três dificuldades por exercício |
 | F4 Adaptação e sessão | Não iniciada | Sessão diária completa sem intervenção manual |
@@ -63,7 +63,7 @@ Portão F0 aprovado por Sergio em 2026-11-03: “Abriu e preservou minhas escolh
 - [x] Som suave e vibração opcionais; erros recebem texto, sem punição.
 - [x] Testes de métricas, filtro de repetição, desbloqueio, migração e fluxos no navegador.
 - [x] Build e verificação final da versão 0.2.0.
-- [ ] Publicação da F1 pelo GitHub Actions e verificação do site público.
+- [x] Publicação da F1 pelo GitHub Actions e verificação do site público.
 - [ ] Sergio: concluir uma lição no celular e confirmar resultado, histórico e conforto do teclado.
 
 Limites de fase: o teclado nativo, as lições 7–12 e o teste de referência pertencem à F2. Adaptação automática e agenda são F4. Painel e exportação completa são F5. Nenhuma dessas fases foi iniciada.
@@ -74,3 +74,9 @@ Limites de fase: o teclado nativo, as lições 7–12 e o teste de referência p
 - Playwright: 6 testes aprovados em 360×640, incluindo lição completa com erro e acertos, contagem real de registros, reabertura offline, acionamento ao soltar, interrupção e escala de texto 200% com teclado 160%.
 - Capturas de treino, ampliação e resultado revisadas. A tecla Espaço foi mantida visível e os botões laterais passaram a coluna em texto ampliado.
 - Teste de digitação rápida revelou atraso de fechamento de handlers; os listeners passam a acompanhar o alvo em useLayoutEffect, antes do próximo evento. Fluxo completo passou após a correção.
+
+## Publicação da F1 confirmada — 2026-11-03
+- Versão 0.2.0, commit de aplicação `b4b556a`; https://github.com/steixeiradecarvalho/Destreza/actions/runs/41698134785 — verificação e implantação aprovadas.
+- Build público corresponde ao build local (`index-BGoZ2pX_.js`).
+- Teste no site público em Chromium com emulação 360×640: HTTP 200, calibração de cinco pontos, tecla por ponteiro, pausa com gravação e reabertura offline do histórico. Sem erros JavaScript observados.
+- F1 continua aberta apenas para o portão no aparelho: lição completa, resultado e conforto. F2 não iniciada.
