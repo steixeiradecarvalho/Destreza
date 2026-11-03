@@ -527,3 +527,91 @@ footer {
 .keyboard.large-labels .keyboard-nav {
   flex-direction: column;
 }
+
+.keyboard-tools,
+.suggestion-bar,
+.accent-palette {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.keyboard-tools button,
+.suggestion-bar button {
+  flex: 1;
+  min-width: 140px;
+}
+.accent-palette {
+  border: 2px solid var(--accent);
+  border-radius: 16px;
+  padding: 12px;
+  background: var(--surface);
+}
+.accent-palette button {
+  width: auto;
+  min-width: 64px;
+  min-height: 64px;
+  text-align: center;
+}
+.accent-palette button:last-child {
+  width: 100%;
+}
+.typed-buffer {
+  padding: 16px;
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+.space-row {
+  display: flex;
+  gap: 8px;
+}
+.space-row button {
+  flex: 1;
+  min-width: 0;
+}
+.native-practice textarea,
+.native-practice input[type="text"] {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  font: inherit;
+  line-height: 1.5;
+  background: var(--surface);
+  color: var(--ink);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  margin: 12px 0 20px;
+}
+.native-practice textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+.native-practice input[type="text"] {
+  min-height: 64px;
+}
+.native-model {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 0;
+  margin-bottom: 16px;
+}
+.native-model h2 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+.native-model p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.field-hint {
+  color: var(--muted);
+}
+.keyboard.large-labels .keyboard-tools,
+.keyboard.large-labels .suggestion-bar {
+  flex-direction: column;
+}

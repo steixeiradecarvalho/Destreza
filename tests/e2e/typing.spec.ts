@@ -132,7 +132,7 @@ test("teclas amplas funcionam por toque e só confirmam ao soltar", async ({
   await page.getByRole("button", { name: "Guardar e sair" }).click();
   await expect(page.locator(".history-list")).toContainText("Interrompida");
 });
-test("seis níveis livres e teclado a 160% com texto a 200% não vazam horizontalmente", async ({
+test("doze níveis livres e teclado a 160% com texto a 200% não vazam horizontalmente", async ({
   page,
 }) => {
   await prepare(page);
@@ -143,7 +143,7 @@ test("seis níveis livres e teclado a 160% com texto a 200% não vazam horizonta
   await page.getByRole("button", { name: "Escolher uma lição" }).click();
   await expect(
     page.getByRole("button", { name: "Prática livre", exact: true }),
-  ).toHaveCount(6);
+  ).toHaveCount(12);
   await page.getByRole("button", { name: "Voltar ao início" }).click();
   await begin(page);
   expect(

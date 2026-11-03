@@ -56,3 +56,16 @@ test("três conclusões guiadas a 85% liberam um nível, prática livre e interr
   expect(unlockedLevel([good, good, good])).toBe(2);
   expect(unlockedLevel([good, good, { ...good, accuracy: 84.9 }])).toBe(1);
 });
+
+test("curso chega ao nível 12 sem pular pré-requisitos ou criar nível 13", () => {
+  const attempts = Array.from({ length: 12 }, (_, index) =>
+    Array.from({ length: 3 }, () => ({
+      level: index + 1,
+      completed: true,
+      free: false,
+      accuracy: 100,
+    })),
+  ).flat();
+  expect(unlockedLevel(attempts)).toBe(12);
+  expect(unlockedLevel(attempts.filter((item) => item.level !== 7))).toBe(7);
+});

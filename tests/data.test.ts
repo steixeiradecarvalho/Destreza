@@ -39,3 +39,31 @@ test("migração da F0 preserva preferências e cria tabelas de treino", async (
   expect(await current.sessoes.count()).toBe(0);
   await current.delete();
 });
+
+test("migração da F1 preserva sessões e cria registros nativos separados", async () => {
+  const { default: Dexie } = await import("dexie");
+  const old = new Dexie("destreza-upgrade-v3-test");
+  old.version(2).stores({
+    config: "&id",
+    perfil: "&id",
+    sessoes: "&id, startedAt, status",
+    tentativas: "&id, sessionId, level",
+    toques: "&id, sessionId, attemptId",
+  });
+  await old.table("config").put({ ...defaults, hand: "esquerda" });
+  await old.table("sessoes").put({
+    id: "f1",
+    startedAt: 1,
+    level: 1,
+    status: "completed",
+    free: false,
+  });
+  old.close();
+  const current = new DestrezaDB("destreza-upgrade-v3-test");
+  expect(await current.sessoes.get("f1")).toMatchObject({
+    status: "completed",
+  });
+  expect(await current.config.get("local")).toMatchObject({ hand: "esquerda" });
+  expect(await current.referencias.count()).toBe(0);
+  await current.delete();
+});

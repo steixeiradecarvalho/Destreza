@@ -6,7 +6,7 @@ PWA em português brasileiro para praticar digitação no celular. Piloto local,
 
 Versão publicada: https://steixeiradecarvalho.github.io/Destreza/.
 
-A **F0** foi validada por Sergio no celular. A versão **F1 (0.2.0)** adiciona teclado de treino, níveis 1–6, calibração, resultados e registro local de toques. Consulte [PLANO.md](PLANO.md) e [DECISOES.md](DECISOES.md).
+As **F0 e F1** foram validadas por Sergio no celular. A versão **F2 (0.3.0)** acrescenta níveis 7–12, teclado nativo, referência de dois minutos e exportação JSON/CSV. Consulte [PLANO.md](PLANO.md) e [DECISOES.md](DECISOES.md).
 
 ## Executar
 
@@ -53,7 +53,7 @@ A configuração segue o [guia de implantação do Vite](https://vite.dev/guide/
 
 ## Dados
 
-Preferências, versão do aceite, calibração, sessões, tentativas e toques ficam no IndexedDB local. A migração da F0 preserva as preferências. Sem analytics, fontes externas ou envio de conteúdo pessoal. Arquivos do app são servidos pelo GitHub Pages. Limpar os dados do navegador pode apagar as preferências e o histórico futuro. O app não faz alegações médicas.
+Preferências, versão do aceite, calibração, sessões, tentativas, toques e resultados nativos ficam no IndexedDB local. A migração da F0 preserva as preferências. Sem analytics, fontes externas ou envio de conteúdo pessoal. Arquivos do app são servidos pelo GitHub Pages. Limpar os dados do navegador pode apagar as preferências e o histórico futuro. O app não faz alegações médicas.
 
 ## Teste da F1 no celular
 
@@ -66,3 +66,16 @@ Preferências, versão do aceite, calibração, sessões, tentativas e toques fi
 7. Relatar se o teclado ficou confortável e se a navegação lateral dificultou encontrar letras. Essa validação encerra o portão da F1; a F2 ainda não foi iniciada.
 
 Uma pausa pode ser retomada enquanto a tela estiver aberta. **Guardar e sair** conserva os toques e marca a lição como interrompida. Fechar durante uma lição não a conclui; o próximo treino começa do início.
+
+## Teste da F2 no celular
+
+1. Abrir com internet e usar **Atualizar agora**, se aparecer.
+2. Escolher **Teste de referência**. Ler o protocolo e, opcionalmente, anotar o teclado e seus ajustes.
+3. Tocar em **Começar o teste** e depois no campo **Escreva aqui** para abrir o teclado do celular. O tempo começa na primeira letra. Copiar a frase; tocar **Próxima frase** ao terminar. O teste encerra após dois minutos, sem contagem regressiva.
+4. Conferir caracteres corretos, palavras por minuto e **erros finais por 100 caracteres**. São medidas do texto final; não representam todos os erros de toque que o teclado pode ter corrigido.
+5. Baixar **Exportar JSON** e **Exportar CSV**. Verificar que os arquivos abrem. Nenhum arquivo é enviado pelo aplicativo.
+6. Voltar ao início, repetir o teste e confirmar que as frases começam na mesma ordem. Manter teclado e ajustes iguais para comparações úteis.
+7. Em **Escolher uma lição**, experimentar os níveis 7–12 em **Prática livre**. O nível 8 ensina segurar a letra, soltar e escolher o acento; o botão **Escolher acento** oferece alternativa ao gesto.
+8. Fechar e reabrir em modo avião: os testes anteriores devem aparecer em **Meus testes**.
+
+Sair do aplicativo durante a referência interrompe o teste; o registro permanece, mas não entra como medição completa. A primeira medição válida inicia o dia 1 do acompanhamento. O aplicativo sugere novos testes nos dias 7, 14, 21 e 28. O CSV desta fase cobre os registros nativos; o JSON inclui todos os dados atuais.

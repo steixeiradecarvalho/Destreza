@@ -36,6 +36,31 @@
       "warmup": "de que com",
       "core": "casa vida mesa rua sol dia amor neto livro amigo cafe",
       "challenge": "um dia de cada vez"
+    },
+    {
+      "id": 7,
+      "warmup": "casa",
+      "core": "bom dia",
+      "challenge": "ate logo",
+      "initial": ["caxa", "bom diaa", "ate logoo"]
+    },
+    {
+      "id": 8,
+      "warmup": "á é í ó ú",
+      "core": "avó café pão mãe ação",
+      "challenge": "não é difícil"
+    },
+    {
+      "id": 9,
+      "warmup": "A B C 1 2",
+      "core": "Bom dia! 15:30",
+      "challenge": "Ana, até amanhã!"
+    },
+    {
+      "id": 10,
+      "warmup": "casa mesa",
+      "core": "bom dia para você",
+      "challenge": "vamos combinar um horário"
     }
   ]
 }

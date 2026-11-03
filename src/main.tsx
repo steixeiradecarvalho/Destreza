@@ -8,14 +8,27 @@ import {
   type Preferences,
   type Session,
   type Attempt,
+  type NativeRun,
 } from "./data/db";
 import { textos as t } from "./ui/textos";
 import "./ui/styles.css";
 import { Lesson } from "./modules/teclado/Lesson";
+import { NativePractice } from "./modules/teclado/NativePractice";
+import { exportData } from "./data/export";
+import { referenceDay, referenceDue } from "./core/native";
 import { unlockedLevel } from "./core/typing";
 type Screen =
-  "welcome" | "settings" | "home" | "install" | "about" | "library" | "lesson";
+  | "welcome"
+  | "settings"
+  | "home"
+  | "install"
+  | "about"
+  | "library"
+  | "lesson"
+  | "reference";
 function App() {
+  const [references, setReferences] = useState<NativeRun[]>([]);
+  const [exportMessage, setExportMessage] = useState("");
   const [selected, setSelected] = useState({ level: 1, free: false });
   const [sessions, setSessions] = useState<Session[]>([]);
   const [attempts, setAttempts] = useState<Attempt[]>([]);
@@ -92,12 +105,18 @@ function App() {
   async function refreshLessons() {
     setHistoryReady(false);
     try {
-      const [history, results] = await Promise.all([
+      const [history, results, native] = await Promise.all([
         db.sessoes.orderBy("startedAt").reverse().limit(5).toArray(),
         db.tentativas.toArray(),
+        db.referencias
+          .where("kind")
+          .equals("reference")
+          .reverse()
+          .sortBy("startedAt"),
       ]);
       setSessions(history);
       setAttempts(results);
+      setReferences(native);
       setHistoryError(false);
     } catch {
       setHistoryError(true);
@@ -110,6 +129,26 @@ function App() {
       void refreshLessons();
   }, [screen, loading]);
   const nextLevel = unlockedLevel(attempts);
+  const completedReferences = references.filter(
+    (run) => run.status === "completed" && run.entered > 0,
+  );
+  const dueDay = referenceDue(
+    completedReferences.map((run) => run.studyDay ?? 1),
+  );
+  const currentStudyDay = completedReferences.length
+    ? referenceDay(
+        Math.min(...completedReferences.map((run) => run.startedAt)),
+        Date.now(),
+      )
+    : 1;
+  async function download(format: "json" | "csv") {
+    try {
+      await exportData(format);
+      setExportMessage(t.exportDone);
+    } catch {
+      setExportMessage(t.exportError);
+    }
+  }
   const openLesson = (level: number, free: boolean) => {
     setSelected({ level, free });
     setScreen("lesson");
@@ -127,15 +166,21 @@ function App() {
             ? t.installTitle
             : screen === "library"
               ? t.libraryTitle
-              : screen === "lesson"
-                ? `${t.level} ${selected.level}`
-                : t.aboutTitle;
+              : screen === "reference"
+                ? t.reference
+                : screen === "lesson"
+                  ? `${t.level} ${selected.level}`
+                  : t.aboutTitle;
   return (
     <>
       <a class="skip" href="#main">
         {t.skip}
       </a>
-      <header class={screen === "lesson" ? "training-header" : ""}>
+      <header
+        class={
+          screen === "lesson" || screen === "reference" ? "training-header" : ""
+        }
+      >
         <span class="brand">
           <svg aria-hidden="true" viewBox="0 0 48 48">
             <path d="M12 34V20a4 4 0 0 1 8 0v9-17a4 4 0 0 1 8 0v17-12a4 4 0 0 1 8 0v15c0 9-6 13-13 13" />
@@ -144,7 +189,12 @@ function App() {
         </span>
         <span class="header-note">{t.motto}</span>
       </header>
-      <main id="main" class={screen === "lesson" ? "training-page" : ""}>
+      <main
+        id="main"
+        class={
+          screen === "lesson" || screen === "reference" ? "training-page" : ""
+        }
+      >
         <p class="eyebrow">{screen === "welcome" ? t.eyebrow : t.motto}</p>
         <h1 ref={heading} tabIndex={-1}>
           {title}
@@ -295,6 +345,17 @@ function App() {
                 {t.vibration}
               </label>
             </fieldset>
+            <section class="card">
+              <h2>{t.exportTitle}</h2>
+              <p>{t.exportHelp}</p>
+              <button type="button" onClick={() => void download("json")}>
+                {t.exportJson}
+              </button>
+              <button type="button" onClick={() => void download("csv")}>
+                {t.exportCsv}
+              </button>
+              <p role="status">{exportMessage}</p>
+            </section>
             <button class="primary" disabled={saving}>
               {saving ? t.saving : t.save}
             </button>
@@ -308,6 +369,21 @@ function App() {
               <h2>{t.phaseTitle}</h2>
               <p>{t.phaseBody}</p>
             </section>
+            <section class="card">
+              <h2>{t.reference}</h2>
+              <p>
+                {completedReferences.length
+                  ? dueDay && currentStudyDay >= dueDay
+                    ? t.referenceToday
+                    : dueDay
+                      ? `${t.referenceDue} ${dueDay}.`
+                      : t.nativeSaved
+                  : t.referenceFirst}
+              </p>
+              <button onClick={() => setScreen("reference")}>
+                {t.startReference}
+              </button>
+            </section>
             <nav aria-label={t.settings}>
               <button
                 class="primary"
@@ -317,6 +393,9 @@ function App() {
                 {t.training}
               </button>
               <button onClick={() => setScreen("library")}>{t.library}</button>
+              <button onClick={() => setScreen("reference")}>
+                {t.reference}
+              </button>
               <button onClick={() => setScreen("settings")}>
                 {t.comfort}
                 <span aria-hidden="true"> →</span>
@@ -415,17 +494,33 @@ function App() {
             <button onClick={back}>{t.back}</button>
           </>
         )}
-        {!loading && screen === "lesson" && (
-          <Lesson
-            key={`${selected.level}-${selected.free}`}
-            level={selected.level}
-            free={selected.free}
-            prefs={prefs}
+        {!loading &&
+          screen === "lesson" &&
+          (selected.level >= 11 ? (
+            <NativePractice
+              level={selected.level}
+              free={selected.free}
+              onExit={back}
+              onSaved={() => void refreshLessons()}
+            />
+          ) : (
+            <Lesson
+              key={`${selected.level}-${selected.free}`}
+              level={selected.level}
+              free={selected.free}
+              prefs={prefs}
+              onExit={back}
+              onSaved={() => void refreshLessons()}
+            />
+          ))}
+        {!loading && screen === "reference" && (
+          <NativePractice
             onExit={back}
             onSaved={() => void refreshLessons()}
+            history={references}
           />
         )}
-        {screen !== "lesson" && (
+        {screen !== "lesson" && screen !== "reference" && (
           <div class="status" role="status">
             {saved && <p>{t.saved}</p>}
             <p>
@@ -438,7 +533,7 @@ function App() {
             </p>
           </div>
         )}
-        {update && screen !== "lesson" && (
+        {update && screen !== "lesson" && screen !== "reference" && (
           <aside class="notice">
             <p>{t.update}</p>
             <button onClick={() => void updater.current?.(true)}>
@@ -447,7 +542,9 @@ function App() {
           </aside>
         )}
       </main>
-      {screen !== "lesson" && <footer>{t.footer}</footer>}
+      {screen !== "lesson" && screen !== "reference" && (
+        <footer>{t.footer}</footer>
+      )}
     </>
   );
 }

@@ -31,6 +31,7 @@ export interface Session {
   level: number;
   status: "active" | "completed" | "interrupted";
   free: boolean;
+  inputMode?: "training" | "native";
 }
 export interface Attempt {
   id: string;
@@ -59,7 +60,32 @@ export interface Profile {
   grip: Preferences["grip"];
   points: CalibrationPoint[];
 }
+export interface NativeRun {
+  id: string;
+  sessionId?: string;
+  level?: number;
+  kind: "reference" | "lesson";
+  status: "active" | "completed" | "interrupted";
+  protocolVersion: number;
+  startedAt: number;
+  finishedAt?: number;
+  durationMs: number;
+  model: string;
+  value: string;
+  keyboardNote: string;
+  correct: number;
+  errors: number;
+  evaluated: number;
+  entered: number;
+  accuracy: number;
+  errorsPer100Characters: number;
+  wpm: number;
+  studyDay?: number;
+  pasteBlocked: boolean;
+  segments?: { model: string; value: string; complete: boolean }[];
+}
 export class DestrezaDB extends Dexie {
+  referencias!: Table<NativeRun, string>;
   config!: Table<Preferences, string>;
   perfil!: Table<Profile, string>;
   sessoes!: Table<Session, string>;
@@ -75,13 +101,20 @@ export class DestrezaDB extends Dexie {
       tentativas: "&id, sessionId, level",
       toques: "&id, sessionId, attemptId",
     });
+    this.version(3).stores({
+      referencias: "&id, kind, status, startedAt, sessionId",
+    });
   }
 }
 export const db = new DestrezaDB();
 export async function savePreferences(value: Preferences) {
   await db.config.put(value);
 }
-export async function beginLesson(level: number, free: boolean) {
+export async function beginLesson(
+  level: number,
+  free: boolean,
+  inputMode: "training" | "native" = "training",
+) {
   const id = crypto.randomUUID();
   await db.transaction("rw", db.sessoes, db.tentativas, async () => {
     // A closed or reloaded lesson remains in the history, but never counts as completed.
@@ -95,6 +128,7 @@ export async function beginLesson(level: number, free: boolean) {
       level,
       status: "active",
       free,
+      inputMode,
     });
     await db.tentativas.add({
       id,
@@ -130,6 +164,30 @@ export async function finishLesson(id: string, complete: boolean) {
         ...(complete ? { completedAt: Date.now() } : {}),
       });
       return result;
+    },
+  );
+}
+
+export async function finishNativeLesson(id: string, complete: boolean) {
+  return db.transaction(
+    "rw",
+    db.sessoes,
+    db.tentativas,
+    db.referencias,
+    async () => {
+      const runs = await db.referencias.where("sessionId").equals(id).toArray();
+      const total = runs.reduce((sum, run) => sum + run.evaluated, 0);
+      const correct = runs.reduce((sum, run) => sum + run.correct, 0);
+      await db.tentativas.update(id, {
+        completed: complete,
+        total,
+        correct,
+        accuracy: total ? (correct / total) * 100 : 0,
+      });
+      await db.sessoes.update(id, {
+        status: complete ? "completed" : "interrupted",
+        ...(complete ? { completedAt: Date.now() } : {}),
+      });
     },
   );
 }

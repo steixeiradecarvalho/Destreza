@@ -1,4 +1,5 @@
 export interface Tap {
+  operation?: "character" | "delete" | "suggestion" | "modifier";
   sessionId: string;
   attemptId: string;
   expected: string;
@@ -59,7 +60,7 @@ export function unlockedLevel(
 ) {
   let level = 1;
   while (
-    level < 6 &&
+    level < 12 &&
     attempts.filter(
       (a) => a.level === level && a.completed && !a.free && a.accuracy >= 85,
     ).length >= 3

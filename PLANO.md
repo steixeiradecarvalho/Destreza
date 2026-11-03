@@ -5,8 +5,8 @@ Responsabilidade técnica: agente de desenvolvimento. Validação da experiênci
 | Fase | Estado | Portão |
 | --- | --- | --- |
 | F0 Base | Concluída; Sergio confirmou abertura offline e preferências preservadas | Build/testes aprovados, publicação, instalação e abertura offline no celular |
-| F1 Teclado 1–6 | Publicada e verificada; aguarda lição completa de Sergio no celular | Lição completa com dados salvos e conforto validado |
-| F2 Teclado nativo e níveis 7–12 | Não iniciada | Referência repetível e exportável |
+| F1 Teclado 1–6 | Concluída; resultado salvo e conforto confirmados por Sergio | Lição completa com dados salvos e conforto validado |
+| F2 Teclado nativo e níveis 7–12 | Implementada; publicação em preparação | Referência repetível e exportável |
 | F3 Mãos 1, 2, 3 e 8 | Não iniciada | Demonstração, ensaio, três dificuldades por exercício |
 | F4 Adaptação e sessão | Não iniciada | Sessão diária completa sem intervenção manual |
 | F5 Painel, diário e demais exercícios | Não iniciada | Quatro visões com dados reais e conferência de sete dias simulados |
@@ -64,9 +64,9 @@ Portão F0 aprovado por Sergio em 2026-11-03: “Abriu e preservou minhas escolh
 - [x] Testes de métricas, filtro de repetição, desbloqueio, migração e fluxos no navegador.
 - [x] Build e verificação final da versão 0.2.0.
 - [x] Publicação da F1 pelo GitHub Actions e verificação do site público.
-- [ ] Sergio: concluir uma lição no celular e confirmar resultado, histórico e conforto do teclado.
+- [x] Sergio: concluir uma lição no celular e confirmar resultado, histórico e conforto do teclado.
 
-Limites de fase: o teclado nativo, as lições 7–12 e o teste de referência pertencem à F2. Adaptação automática e agenda são F4. Painel e exportação completa são F5. Nenhuma dessas fases foi iniciada.
+Limites de fase: o teclado nativo, as lições 7–12 e o teste de referência pertencem à F2. Adaptação automática e agenda são F4. Painel e exportação completa são F5. Na entrega da F1, essas fases ainda não estavam iniciadas; a F2 foi liberada após a confirmação de Sergio.
 
 ## Evidências locais da F1 — 2026-11-03
 - TypeScript estrito e build de produção aprovados; precache de aproximadamente 165 KiB.
@@ -79,4 +79,33 @@ Limites de fase: o teclado nativo, as lições 7–12 e o teste de referência p
 - Versão 0.2.0, commit de aplicação `b4b556a`; https://github.com/steixeiradecarvalho/Destreza/actions/runs/41698134785 — verificação e implantação aprovadas.
 - Build público corresponde ao build local (`index-BGoZ2pX_.js`).
 - Teste no site público em Chromium com emulação 360×640: HTTP 200, calibração de cinco pontos, tecla por ponteiro, pausa com gravação e reabertura offline do histórico. Sem erros JavaScript observados.
-- F1 continua aberta apenas para o portão no aparelho: lição completa, resultado e conforto. F2 não iniciada.
+- Na entrega da F1, faltava o portão no aparelho. Sergio confirmou depois o resultado salvo e o conforto das teclas e da navegação, liberando a F2.
+
+## F2 — teclado nativo, referência e níveis 7–12
+Portão anterior aprovado por Sergio: resultado da lição salvo; teclas e navegação confortáveis.
+
+- [x] Nível 7: corrigir texto preparado, com apagar real no teclado de treino.
+- [x] Nível 8: toque longo para acentos, com escolha por botão como alternativa acessível.
+- [x] Nível 9: maiúsculas, números e pontuação em camadas.
+- [x] Nível 10: completar palavra por sugestão local.
+- [x] Níveis 11 e 12: três etapas no teclado nativo, com frases e mensagens originais.
+- [x] Referência de 120 segundos desde a primeira letra, sem contagem regressiva.
+- [x] Frases fixas e protocolo versionado; calendário de acompanhamento nos dias 1, 7, 14, 21 e 28.
+- [x] Métricas por caracteres finais, separadas dos toques do teclado instrumentado.
+- [x] Interrupção ao sair da página, bloqueio de colar e gravação local de rascunhos.
+- [x] JSON com todos os registros atuais; CSV com referência e lições nativas, protegido contra fórmulas de planilha.
+- [x] Migração v2 → v3 preservando sessões e preferências anteriores.
+- [x] Testes de lógica, migração, exportação e fluxos dos seis novos níveis.
+- [x] Verificação final de produção e revisão visual da versão 0.3.0.
+- [ ] Publicação pelo GitHub Actions e verificação do site público.
+- [ ] Sergio: completar referência no teclado real, repetir com as mesmas frases e exportar os arquivos no celular.
+
+Os exercícios de Mãos (F3) não foram iniciados. A F2 só encerra após o portão no celular.
+
+## Evidências locais da F2 — 2026-11-03
+- TypeScript estrito e build 0.3.0 aprovados; precache de aproximadamente 186 KiB.
+- Vitest: 13 testes aprovados, incluindo migração v2 → v3, alinhamento de caracteres, calendário e CSV seguro.
+- Playwright: 14 testes aprovados em 360×640, incluindo correção, toque longo, camadas, sugestões, lições nativas 11/12, cronômetro controlado de 120 segundos, downloads JSON/CSV reais, bloqueio de colar, interrupção e histórico offline.
+- Referência e resultados também verificados com texto a 200%; capturas revisadas visualmente.
+- A regressão de Backspace no nível 7 foi corrigida preservando o nome da tecla física. Retry de gravação nativa conserva o rascunho e não reinicia o teste.
+- Emulação valida o campo e a lógica; teclado visual do sistema e sugestões ainda precisam do teste no aparelho.

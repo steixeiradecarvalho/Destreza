@@ -26,6 +26,24 @@ export function Lesson({ level, free, prefs, onExit, onSaved }: Props) {
   >("intro");
   const [stage, setStage] = useState(0);
   const [index, setIndex] = useState(0);
+  const [buffer, setBuffer] = useState(lesson.initial?.[0] ?? "");
+  const correcting = level === 7;
+  const expectedKey = correcting
+    ? stages[stage].startsWith(buffer)
+      ? stages[stage][buffer.length]
+      : "Backspace"
+    : stages[stage][index];
+  const wordStart = stages[stage].lastIndexOf(" ", index - 1) + 1;
+  const wordEnd = stages[stage].indexOf(" ", index);
+  const fullWord = stages[stage].slice(
+    wordStart,
+    wordEnd < 0 ? undefined : wordEnd,
+  );
+  const prefix = stages[stage].slice(wordStart, index);
+  const suggestions =
+    level === 10 && prefix && fullWord.length > prefix.length
+      ? [{ word: fullWord, tail: fullWord.slice(prefix.length) }]
+      : [];
   const [sessionId, setSessionId] = useState("");
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
@@ -124,7 +142,19 @@ export function Lesson({ level, free, prefs, onExit, onSaved }: Props) {
   }
   function writeHit(hit: Hit) {
     if (lock.current || mode !== "practice") return;
-    const expected = stages[stage][index];
+    const modifier = hit.operation === "modifier";
+    const expected = modifier
+      ? hit.actual!
+      : correcting
+        ? expectedKey
+        : hit.operation === "suggestion"
+          ? stages[stage].slice(index, index + (hit.actual?.length ?? 1))
+          : expectedKey;
+    const nextBuffer = correcting
+      ? hit.actual === "Backspace"
+        ? buffer.slice(0, -1)
+        : buffer + (hit.actual ?? "")
+      : buffer;
     const tap = {
       ...hit,
       id: crypto.randomUUID(),
@@ -141,8 +171,16 @@ export function Lesson({ level, free, prefs, onExit, onSaved }: Props) {
       await db.toques.put(value.tap);
       feedback(prefs, value.tap.correct);
       setMessage(value.tap.correct ? t.correct : t.mistake);
-      if (value.tap.correct) {
-        if (index + 1 < stages[stage].length) setIndex(index + 1);
+      if (modifier) return;
+      if (correcting) setBuffer(nextBuffer);
+      const nextIndex = correcting
+        ? nextBuffer.length
+        : index + (hit.actual?.length ?? 1);
+      const completeStage = correcting
+        ? nextBuffer === stages[stage]
+        : nextIndex >= stages[stage].length;
+      if ((correcting && completeStage) || (!correcting && value.tap.correct)) {
+        if (!completeStage) setIndex(nextIndex);
         else if (stage < 2) setMode("break");
         else {
           const summary = await finishLesson(sessionId, true);
@@ -177,6 +215,8 @@ export function Lesson({ level, free, prefs, onExit, onSaved }: Props) {
             {t.levels[level - 1]}
           </h2>
           <p>{t.descriptions[level - 1]}</p>
+          {level === 8 && <p>{t.accentHelp}</p>}
+          {correcting && <p>{t.correctionHelp}</p>}
           <p>{t.lessonIntro}</p>
           <details>
             <summary>{t.keyboardLabel}</summary>
@@ -233,16 +273,31 @@ export function Lesson({ level, free, prefs, onExit, onSaved }: Props) {
             <h2 ref={title} tabIndex={-1}>
               {stageNames[stage]}
             </h2>
-            <p class="target-letter">
+            <p class="target-letter" aria-live="polite" aria-atomic="true">
               {t.target}{" "}
               <strong>
-                {stages[stage][index] === " " ? t.space : stages[stage][index]}
+                {expectedKey === "Backspace"
+                  ? t.deleteKey
+                  : expectedKey === " "
+                    ? t.space
+                    : expectedKey}
               </strong>
             </p>
             <p class="lesson-progress">
-              {t.progress}: {index} / {stages[stage].length}
+              {t.progress}: {correcting ? stage : index} /{" "}
+              {correcting ? 3 : stages[stage].length}
             </p>
           </div>
+          {correcting && (
+            <>
+              <p>
+                {t.word}: {stages[stage]}
+              </p>
+              <p class="typed-buffer" aria-live="polite">
+                {t.typedText}: <strong>{buffer || "·"}</strong>
+              </p>
+            </>
+          )}
           <p class="word-model" aria-label={t.word}>
             {Array.from(
               stages[stage].slice(Math.max(0, index - 5), index + 10),
@@ -268,7 +323,9 @@ export function Lesson({ level, free, prefs, onExit, onSaved }: Props) {
             {message || t.stageHints[stage]}
           </p>
           <Keyboard
-            expected={stages[stage][index]}
+            expected={expectedKey}
+            level={level}
+            suggestions={suggestions}
             prefs={prefs}
             onHit={writeHit}
             disabled={busy || error}
@@ -288,6 +345,7 @@ export function Lesson({ level, free, prefs, onExit, onSaved }: Props) {
             class="primary"
             onClick={() => {
               setStage(stage + 1);
+              setBuffer(lesson.initial?.[stage + 1] ?? "");
               setIndex(0);
               setMessage("");
               setMode("practice");
