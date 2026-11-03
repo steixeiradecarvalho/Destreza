@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
+import { useLayoutEffect, useRef, useState } from "preact/hooks";
 import type { JSX } from "preact";
 import type { Preferences } from "../../data/db";
 import { repeatedTap } from "../../core/typing";
@@ -40,13 +40,24 @@ export function Keyboard({ expected, prefs, onHit, disabled }: Props) {
         "--window-width",
         `${v.clientWidth - 16}px`,
       );
+      const windowRect = v.getBoundingClientRect();
+      for (const key of grid.current?.querySelectorAll<HTMLButtonElement>(
+        ".key-row button",
+      ) ?? []) {
+        const rect = key.getBoundingClientRect();
+        // Do not present a clipped fragment as a small, interactive target.
+        key.style.visibility =
+          rect.left >= windowRect.left + 1 && rect.right <= windowRect.right - 1
+            ? "visible"
+            : "hidden";
+      }
       setSide({
         left: v.scrollLeft > 1,
         right: v.scrollLeft < v.scrollWidth - v.clientWidth - 1,
       });
     }
   }
-  useEffect(() => {
+  useLayoutEffect(() => {
     const v = viewport.current;
     if (!v) return;
     v.scrollLeft =

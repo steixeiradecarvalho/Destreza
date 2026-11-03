@@ -26,11 +26,14 @@ async function typeStage(page: Page, value: string) {
   for (let i = 0; i < value.length; i++) {
     // Focus stays outside the keys so Space is a physical keyboard character.
     await page.locator(".lesson-target h2").focus();
-    if (value[i] === "ç")
+    if (value[i] === "ç") {
+      await page
+        .getByRole("button", { name: "Mostrar a tecla", exact: true })
+        .click();
       await page
         .getByRole("button", { name: "Letra ç", exact: true })
         .press("Enter");
-    else await page.keyboard.press(value[i] === " " ? "Space" : value[i]);
+    } else await page.keyboard.press(value[i] === " " ? "Space" : value[i]);
     if (i + 1 < value.length)
       await expect(page.locator(".lesson-progress")).toHaveText(
         `Concluído: ${i + 1} / ${value.length}`,
@@ -152,6 +155,23 @@ test("seis níveis livres e teclado a 160% com texto a 200% não vazam horizonta
     .getByRole("button", { name: "Mostrar a tecla", exact: true })
     .click();
   await page.evaluate(() => window.scrollTo(0, 0));
+  expect(
+    await page.evaluate(() => {
+      const windowRect = document
+        .querySelector(".keyboard-window")!
+        .getBoundingClientRect();
+      return [...document.querySelectorAll<HTMLElement>(".key-row button")]
+        .filter((key) => getComputedStyle(key).visibility === "visible")
+        .every((key) => {
+          const rect = key.getBoundingClientRect();
+          return (
+            rect.width >= 48 &&
+            rect.left >= windowRect.left + 1 &&
+            rect.right <= windowRect.right - 1
+          );
+        });
+    }),
+  ).toBe(true);
   await page.screenshot({
     path: "test-results/teclado-200.png",
     fullPage: true,
