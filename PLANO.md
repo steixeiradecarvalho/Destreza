@@ -109,3 +109,4 @@ Os exercícios de Mãos (F3) não foram iniciados. A F2 só encerra após o port
 - Referência e resultados também verificados com texto a 200%; capturas revisadas visualmente.
 - A regressão de Backspace no nível 7 foi corrigida preservando o nome da tecla física. Retry de gravação nativa conserva o rascunho e não reinicia o teste.
 - Emulação valida o campo e a lógica; teclado visual do sistema e sugestões ainda precisam do teste no aparelho.
+- Primeira execução remota da F2: 13 testes unitários e build aprovados; dois testes de navegador falharam por sincronização de entrada e navegação no cenário de relógio simulado a 200%. Os downloads e o prazo de 120 segundos já haviam passado. Ajustadas as esperas pela gravação e a navegação por teclado nesse cenário; foco de títulos nativos passa a ocorrer antes da pintura. `CI=true npm run test:e2e`: 14 aprovados após as correções.

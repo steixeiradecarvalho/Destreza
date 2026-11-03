@@ -86,7 +86,7 @@ test("referência dura 120 segundos, exporta resultado e repete as mesmas frases
     path: "test-results/referencia-concluida.png",
     fullPage: true,
   });
-  await page.getByRole("button", { name: "Voltar ao início" }).click();
+  await page.getByRole("button", { name: "Voltar ao início" }).press("Enter");
   await openReference(page);
   await expect(page.locator(".native-model p")).toHaveText(
     reference.phrases[0],
@@ -95,7 +95,7 @@ test("referência dura 120 segundos, exporta resultado e repete as mesmas frases
   await expect(
     page.getByRole("heading", { name: "O teste foi interrompido." }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Voltar ao início" }).click();
+  await page.getByRole("button", { name: "Voltar ao início" }).press("Enter");
   await expect(page.getByRole("status")).toContainText(
     "Pronto para abrir sem internet.",
   );

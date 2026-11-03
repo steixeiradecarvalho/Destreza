@@ -19,9 +19,15 @@ async function begin(page: Page, level: number) {
   await page.getByRole("button", { name: "Começar a lição" }).click();
 }
 async function physical(page: Page, key: string, expected: string) {
+  const label =
+    key === "Space" ? "Espaço" : key === "Backspace" ? "Apagar" : key;
+  await expect(page.locator(".target-letter strong")).toHaveText(label);
+  await expect(
+    page.getByRole("button", { name: "Fazer uma pausa" }),
+  ).toBeEnabled();
   await page.locator(".lesson-target h2").focus();
   await page.keyboard.press(key);
-  await expect(page.locator(".target-letter")).toContainText(expected);
+  await expect(page.locator(".target-letter strong")).toHaveText(expected);
 }
 test("nível 7 corrige textos com apagar e preserva eventos de correção", async ({
   page,
@@ -29,7 +35,7 @@ test("nível 7 corrige textos com apagar e preserva eventos de correção", asyn
   await begin(page, 7);
   await expect(page.locator(".typed-buffer")).toContainText("caxa");
   await page.getByRole("button", { name: "Apagar", exact: true }).click();
-  await expect(page.locator(".typed-buffer")).toContainText("cax");
+  await expect(page.locator(".typed-buffer strong")).toHaveText("cax");
   await physical(page, "Backspace", "s");
   await physical(page, "s", "a");
   await page.locator(".lesson-target h2").focus();

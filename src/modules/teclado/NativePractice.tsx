@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "preact/hooks";
+import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
 import reference from "../../content/referencia.json";
 import nativeLessons from "../../content/native-lessons.json";
 import {
@@ -52,7 +52,7 @@ export function NativePractice({
   const model = isReference
     ? reference.phrases[phrase % reference.phrases.length]
     : nativeLessons[String(level) as keyof typeof nativeLessons][stage];
-  useEffect(() => {
+  useLayoutEffect(() => {
     heading.current?.focus();
     window.scrollTo(0, 0);
   }, [mode, stage]);
