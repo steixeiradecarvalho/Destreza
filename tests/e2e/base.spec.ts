@@ -26,6 +26,8 @@ test('manifesto tem escopo correto e app reabre sem conexão', async ({ page, co
   await page.getByRole('button', { name: 'Entendi e quero preparar meu espaço' }).click();
   await page.getByLabel('Esquerda', { exact: true }).check();
   await page.getByRole('button', { name: 'Salvar e continuar' }).click();
+  await expect(page.getByRole('heading', { name: 'Seu espaço está pronto.' })).toBeVisible();
+  await expect(page.getByRole('status')).toContainText('Preferências salvas neste aparelho.');
   await page.close();
   await context.setOffline(true);
   const reopened = await context.newPage();

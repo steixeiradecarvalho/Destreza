@@ -45,3 +45,4 @@ F0 permanece aberta. F1 só inicia após o portão, conforme a especificação.
 - `npm run test:e2e`: 3 fluxos aprovados em 360×640: preferências a 200%, reabertura offline com preferências, navegação sem terceiros.
 - Capturas de boas-vindas e conforto a 200% revisadas; título de feedback encurtado para facilitar leitura ampliada.
 - Teste no aparelho real, leitores de tela e comportamento após troca de versão seguem pendentes.
+- Primeira execução remota: build e testes unitários aprovados; teste offline fechou a página antes da conclusão de `Salvar`. Corrigido para aguardar a confirmação de persistência antes de fechar. Três fluxos aprovados novamente com `CI=true` local.
