@@ -7,7 +7,7 @@ Responsabilidade técnica: agente de desenvolvimento. Validação da experiênci
 | F0 Base | Concluída; Sergio confirmou abertura offline e preferências preservadas | Build/testes aprovados, publicação, instalação e abertura offline no celular |
 | F1 Teclado 1–6 | Concluída; resultado salvo e conforto confirmados por Sergio | Lição completa com dados salvos e conforto validado |
 | F2 Teclado nativo e níveis 7–12 | Concluída; teclado e exportação confirmados por Sergio | Referência repetível e exportável |
-| F3 Mãos 1, 2, 3 e 8 | Implementada e validada localmente; publicação em andamento | Demonstração, ensaio, três dificuldades por exercício |
+| F3 Mãos 1, 2, 3 e 8 | Publicada e verificada; aguarda teste dos quatro exercícios no celular | Demonstração, ensaio, três dificuldades por exercício |
 | F4 Adaptação e sessão | Não iniciada | Sessão diária completa sem intervenção manual |
 | F5 Painel, diário e demais exercícios | Não iniciada | Quatro visões com dados reais e conferência de sete dias simulados |
 | F6 Polimento e pessoas | Não iniciada | Sem bloqueios graves; acessibilidade manual; acompanhamento de quatro semanas |
@@ -129,7 +129,7 @@ O portão da F2 foi aprovado por Sergio: “Testei no celular. Ok. O teclado abr
 - [x] Contrato preparar/rodar/medir/parâmetros, sem acoplamento ao futuro motor de adaptação.
 - [x] Migração v3 → v4 preservando referências anteriores; JSON inclui práticas e movimentos.
 - [x] Build, 20 testes unitários e 19 de navegador aprovados; revisão visual em 360×640 e texto a 200%.
-- [ ] Publicação no GitHub Pages e conferência do endereço público.
+- [x] Publicação no GitHub Pages e conferência do endereço público.
 - [ ] Sergio: experimentar os quatro exercícios no celular, conferir resultados e conforto dos gestos.
 
 A F4, com adaptação e sessão diária, não foi iniciada. A F3 aguarda seu próprio portão no celular.
@@ -146,3 +146,9 @@ A F4, com adaptação e sessão diária, não foi iniciada. A F3 aguarda seu pr�
 - Histórico de Mãos reaparece offline, e o JSON exportado contém práticas e movimentos.
 - Capturas da Trilha, Sequência, Gestos, resultados e biblioteca a 200% revisadas. Rótulos dos círculos e botão da biblioteca ajustados para leitura.
 - Emulação não substitui a validação de alcance e conforto dos gestos no celular de Sergio.
+
+## Publicação da F3 confirmada — 2026-11-04
+- Versão 0.4.0, commit de aplicação `399b94f`; https://github.com/steixeiradecarvalho/Destreza/actions/runs/41859859797 — build, 20 testes unitários, 19 de navegador e implantação aprovados.
+- Site público corresponde ao build local (`index-Cq-7PBoy.js`), com HTTP 200.
+- Conferência pública em Chromium com emulação 360×640 e relógio controlado para a demonstração: quatro exercícios disponíveis; ensaio e prática de Alvos concluídos; JSON com uma prática e exatamente dez movimentos; histórico reaberto offline. Nenhum erro JavaScript observado.
+- Retomada finalizada sem perda de arquivos. F3 permanece aberta para validação dos quatro exercícios e conforto no celular; F4 não iniciada.
