@@ -6,7 +6,7 @@ PWA em português brasileiro para praticar digitação no celular. Piloto local,
 
 Versão publicada: https://steixeiradecarvalho.github.io/Destreza/.
 
-As **F0, F1 e F2** foram validadas por Sergio no celular. A versão **F3 (0.4.0)** acrescenta Trilha, Alvos, Sequência e Gestos do dia a dia, com demonstração, ensaio e três dificuldades. Consulte [PLANO.md](PLANO.md) e [DECISOES.md](DECISOES.md).
+As **F0–F3** foram validadas por Sergio no celular. A versão **F4 (0.5.0)** acrescenta sessão diária, adaptação gradual da dificuldade, revisão de teclas e fecho com avaliação opcional. Consulte [PLANO.md](PLANO.md) e [DECISOES.md](DECISOES.md).
 
 ## Executar
 
@@ -53,13 +53,13 @@ A configuração segue o [guia de implantação do Vite](https://vite.dev/guide/
 
 ## Dados
 
-Preferências, versão do aceite, calibração, sessões, tentativas, toques, resultados nativos, práticas de mãos e movimentos ficam no IndexedDB local. A migração da F0 preserva as preferências. Sem analytics, fontes externas ou envio de conteúdo pessoal. Arquivos do app são servidos pelo GitHub Pages. Limpar os dados do navegador pode apagar as preferências e o histórico futuro. O app não faz alegações médicas.
+Preferências, versão do aceite, calibração, sessões, tentativas, toques, resultados nativos, práticas de mãos, movimentos, adaptação, domínio das teclas, sessões diárias e diário ficam no IndexedDB local. A migração da F0 preserva as preferências. Sem analytics, fontes externas ou envio de conteúdo pessoal. Arquivos do app são servidos pelo GitHub Pages. Limpar os dados do navegador pode apagar as preferências e o histórico futuro. O app não faz alegações médicas.
 
 ## Teste da F1 no celular
 
 1. Abrir com internet e, se aparecer, tocar em **Atualizar agora**. Confirmar que existe **Treino de hoje**.
 2. Em **Ajustar meu conforto**, escolher tamanho das teclas (100–160%) e marca do toque. Som e vibração são opcionais.
-3. Tocar em **Treino de hoje → Começar a lição**; fazer os cinco toques de calibração e começar a lição.
+3. Tocar em **Escolher uma lição → Praticar no curso → Começar a lição**; fazer os cinco toques de calibração e começar a lição.
 4. Usar **Mais à esquerda**, **Mais à direita** e **Mostrar a tecla** para encontrar as letras. O espaço fica sempre visível. O treino também aceita teclado físico.
 5. Concluir aquecimento, prática e desafio. Conferir **Lição e toques salvos neste aparelho**, voltar ao início e verificar **Últimas lições**.
 6. Fechar, ativar modo avião e reabrir. O histórico deve continuar disponível.
@@ -92,3 +92,16 @@ Sair do aplicativo durante a referência interrompe o teste; o registro permanec
 8. Relatar conforto, clareza da demonstração e qualquer dificuldade com os dois dedos. Essa validação encerra a F3 e libera a F4.
 
 O aplicativo registra a mão solicitada; não detecta qual mão foi usada. A precisão descreve esta atividade. A figura é um mapa/foto de treino local, sem câmera ou localização. Se o aplicativo for fechado antes do fim, os movimentos já gravados permanecem, mas a prática não é marcada como concluída.
+
+
+## Teste da F4 no celular
+
+1. Abrir com internet e escolher **Atualizar agora**, se oferecido. Entrar em **Treino de hoje**.
+2. Conferir plano e duração. A opção **Sessão leve** reduz a carga; a duração padrão é de onze minutos aproximados, com demonstrações, ensaios e pausas à parte.
+3. Começar a sessão. Fazer aquecimento e ensaio; observar se a troca de etapas e o início de novos blocos são claros, sem escolher dificuldade manualmente.
+4. Se houver referência inicial/semanal, copiar com o teclado do celular por dois minutos. A medição substitui dois minutos da prática do teclado.
+5. Durante uma etapa, usar pausa e guardar/sair. Fechar e reabrir, inclusive offline depois do primeiro carregamento, e escolher **Retomar sessão**. Etapas concluídas permanecem; a atividade atual recomeça com o tempo restante.
+6. Concluir teclado e mãos. No fecho, escolher nota opcional, escrever uma observação e salvar. Conferir a confirmação. Marcar desconforto somente se quiser testar a sugestão de descanso; isso não bloqueia a biblioteca.
+7. Relatar se conseguiu completar a sessão sozinho, se as transições ficaram claras e se o tempo e a alternância de mãos ficaram confortáveis.
+
+A prática por tempo conserva os toques sem registrar uma lição inteira como concluída. A referência interrompida precisa recomeçar por inteiro. Não há notificação em segundo plano: o lembrete aparece na página inicial. O JSON inclui as sessões diárias e o diário; o painel e a consulta do diário serão F5.

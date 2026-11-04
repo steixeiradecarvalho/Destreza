@@ -11,7 +11,11 @@ async function prepare(page: Page) {
   ).toBeVisible();
 }
 async function begin(page: Page) {
-  await page.getByRole("button", { name: "Treino de hoje" }).click();
+  await page.getByRole("button", { name: "Escolher uma lição" }).click();
+  await page
+    .getByRole("button", { name: "Praticar no curso", exact: true })
+    .first()
+    .click();
   await page.getByRole("button", { name: "Começar a lição" }).click();
   for (let i = 1; i <= 5; i++)
     await page

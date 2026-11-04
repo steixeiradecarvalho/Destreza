@@ -1,3 +1,5 @@
+import type { AdaptiveState, KeySkill } from "../core/adaptation";
+import type { DailyPlan } from "../core/daily";
 import Dexie, { type Table } from "dexie";
 import type { MotorEvent, MotorSettings, MotorSummary } from "../core/motor";
 import { metrics, type Tap } from "../core/typing";
@@ -12,6 +14,7 @@ export interface Preferences {
   vibration: boolean;
   keyboardSize?: number;
   ghost?: boolean;
+  sessionMinutes?: number;
 }
 export const defaults: Preferences = {
   id: "local",
@@ -33,6 +36,8 @@ export interface Session {
   status: "active" | "completed" | "interrupted";
   free: boolean;
   inputMode?: "training" | "native";
+  dailyId?: string;
+  endReason?: "timebox" | "abandoned";
 }
 export interface Attempt {
   id: string;
@@ -83,12 +88,16 @@ export interface NativeRun {
   wpm: number;
   studyDay?: number;
   pasteBlocked: boolean;
+  dailyId?: string;
   segments?: { model: string; value: string; complete: boolean }[];
 }
 export interface MotorRun {
   id: string;
   exercise: string;
   contentVersion: number;
+  dailyId?: string;
+  dailyRole?: "warmup" | "hands";
+  activeMs?: number;
   settings: MotorSettings;
   parameters: Record<string, number | string>;
   startedAt: number;
@@ -100,8 +109,35 @@ export interface StoredMotorEvent extends MotorEvent {
   id: string;
   runId: string;
   exercise: string;
+  difficulty?: 1 | 2 | 3;
+  handMode?: string;
+}
+export interface DailyRun {
+  id: string;
+  day: string;
+  startedAt: number;
+  completedAt?: number;
+  status: "active" | "paused" | "completed" | "interrupted";
+  plan: DailyPlan;
+  stageIndex: number;
+  stageElapsedMs: number;
+  activeMs: number;
+  completedStages: string[];
+}
+export interface DiaryEntry {
+  id: string;
+  dailyId: string;
+  day: string;
+  at: number;
+  rating: number | null;
+  pain: boolean;
+  note: string;
 }
 export class DestrezaDB extends Dexie {
+  adaptacao!: Table<AdaptiveState, string>;
+  teclas!: Table<KeySkill, string>;
+  diarias!: Table<DailyRun, string>;
+  diario!: Table<DiaryEntry, string>;
   exercicios!: Table<MotorRun, string>;
   movimentos!: Table<StoredMotorEvent, string>;
   referencias!: Table<NativeRun, string>;
@@ -127,6 +163,12 @@ export class DestrezaDB extends Dexie {
       exercicios: "&id, exercise, startedAt, status",
       movimentos: "&id, runId, exercise",
     });
+    this.version(5).stores({
+      adaptacao: "&id",
+      teclas: "&id, kind, dueAt",
+      diarias: "&id, day, status, startedAt",
+      diario: "&id, dailyId, day",
+    });
   }
 }
 export const db = new DestrezaDB();
@@ -137,6 +179,7 @@ export async function beginLesson(
   level: number,
   free: boolean,
   inputMode: "training" | "native" = "training",
+  dailyId?: string,
 ) {
   const id = crypto.randomUUID();
   await db.transaction("rw", db.sessoes, db.tentativas, async () => {
@@ -152,6 +195,7 @@ export async function beginLesson(
       status: "active",
       free,
       inputMode,
+      dailyId,
     });
     await db.tentativas.add({
       id,
@@ -167,7 +211,11 @@ export async function beginLesson(
   });
   return id;
 }
-export async function finishLesson(id: string, complete: boolean) {
+export async function finishLesson(
+  id: string,
+  complete: boolean,
+  endReason?: "timebox" | "abandoned",
+) {
   return db.transaction(
     "rw",
     db.sessoes,
@@ -184,6 +232,7 @@ export async function finishLesson(id: string, complete: boolean) {
       });
       await db.sessoes.update(id, {
         status: complete ? "completed" : "interrupted",
+        ...(endReason ? { endReason } : {}),
         ...(complete ? { completedAt: Date.now() } : {}),
       });
       return result;
@@ -191,7 +240,11 @@ export async function finishLesson(id: string, complete: boolean) {
   );
 }
 
-export async function finishNativeLesson(id: string, complete: boolean) {
+export async function finishNativeLesson(
+  id: string,
+  complete: boolean,
+  endReason?: "timebox" | "abandoned",
+) {
   return db.transaction(
     "rw",
     db.sessoes,
@@ -209,6 +262,7 @@ export async function finishNativeLesson(id: string, complete: boolean) {
       });
       await db.sessoes.update(id, {
         status: complete ? "completed" : "interrupted",
+        ...(endReason ? { endReason } : {}),
         ...(complete ? { completedAt: Date.now() } : {}),
       });
     },

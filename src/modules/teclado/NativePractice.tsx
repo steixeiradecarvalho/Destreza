@@ -21,6 +21,12 @@ interface Props {
   onExit: () => void;
   onSaved: () => void;
   history?: NativeRun[];
+  guided?: {
+    dailyId: string;
+    onComplete: () => void;
+    onRunning: (running: boolean) => void;
+    autoStart?: boolean;
+  };
 }
 export function NativePractice({
   level,
@@ -28,6 +34,7 @@ export function NativePractice({
   onExit,
   onSaved,
   history = [],
+  guided,
 }: Props) {
   const isReference = !level;
   const [mode, setMode] = useState<"intro" | "active" | "between" | "result">(
@@ -56,6 +63,12 @@ export function NativePractice({
     heading.current?.focus();
     window.scrollTo(0, 0);
   }, [mode, stage]);
+  useLayoutEffect(() => {
+    guided?.onRunning(mode === "active" && !error);
+  }, [mode, error]);
+  useEffect(() => {
+    if (guided?.autoStart) void start();
+  }, []);
   function checkpoint() {
     const snapshot = structuredClone(run.current!);
     queue.current = queue.current
@@ -89,11 +102,17 @@ export function NativePractice({
     };
     try {
       if (!isReference && !session.current)
-        session.current = await beginLesson(level!, free, "native");
+        session.current = await beginLesson(
+          level!,
+          free,
+          "native",
+          guided?.dailyId,
+        );
       started.current = null;
       finalizing.current = false;
       run.current = {
         id: crypto.randomUUID(),
+        dailyId: guided?.dailyId,
         sessionId: session.current,
         level,
         kind: isReference ? "reference" : "lesson",
@@ -222,6 +241,7 @@ export function NativePractice({
           setMessage("");
           setMode("result");
           onSaved();
+          if (guided && complete) guided.onComplete();
         }
       } catch {
         setError(true);

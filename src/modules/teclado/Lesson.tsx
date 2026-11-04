@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "preact/hooks";
+import { saveTypingTap } from "../../data/learning";
+import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
 import content from "../../content/teclado.json";
 import {
   db,
@@ -17,10 +18,22 @@ interface Props {
   prefs: Preferences;
   onExit: () => void;
   onSaved: () => void;
+  guided?: {
+    dailyId: string;
+    review: string;
+    onComplete: () => void;
+    onRunning: (running: boolean) => void;
+    autoStart?: boolean;
+    shouldFinish?: () => boolean;
+  };
 }
-export function Lesson({ level, free, prefs, onExit, onSaved }: Props) {
+export function Lesson({ level, free, prefs, onExit, onSaved, guided }: Props) {
   const lesson = content.levels.find((item) => item.id === level)!;
-  const stages = [lesson.warmup, lesson.core, lesson.challenge];
+  const stages = [
+    guided?.review && level < 7 ? guided.review : lesson.warmup,
+    lesson.core,
+    lesson.challenge,
+  ];
   const [mode, setMode] = useState<
     "intro" | "calibration" | "practice" | "break" | "result" | "pause"
   >("intro");
@@ -64,6 +77,19 @@ export function Lesson({ level, free, prefs, onExit, onSaved }: Props) {
     title.current?.focus();
     window.scrollTo(0, 0);
   }, [mode, stage]);
+  useLayoutEffect(() => {
+    guided?.onRunning(mode === "practice" && !error);
+  }, [mode, error]);
+  useEffect(() => {
+    if (guided?.autoStart) start();
+  }, []);
+  useEffect(() => {
+    const hide = () => {
+      if (document.hidden && mode === "practice") setMode("pause");
+    };
+    document.addEventListener("visibilitychange", hide);
+    return () => document.removeEventListener("visibilitychange", hide);
+  }, [mode]);
   function task(action: () => Promise<void>) {
     retry.current = () => {
       void run();
@@ -85,7 +111,7 @@ export function Lesson({ level, free, prefs, onExit, onSaved }: Props) {
   }
   function createSession() {
     task(async () => {
-      const id = await beginLesson(level, free);
+      const id = await beginLesson(level, free, "training", guided?.dailyId);
       setSessionId(id);
       began.current = performance.now();
       setMode("practice");
@@ -100,7 +126,7 @@ export function Lesson({ level, free, prefs, onExit, onSaved }: Props) {
         profile.hand === prefs.hand &&
         profile.grip === prefs.grip
       ) {
-        const id = await beginLesson(level, free);
+        const id = await beginLesson(level, free, "training", guided?.dailyId);
         setSessionId(id);
         began.current = performance.now();
         setMode("practice");
@@ -168,7 +194,13 @@ export function Lesson({ level, free, prefs, onExit, onSaved }: Props) {
     pending.current = { tap, hit };
     task(async () => {
       const value = pending.current!;
-      await db.toques.put(value.tap);
+      await saveTypingTap(value.tap);
+      if (guided?.shouldFinish?.()) {
+        await finishLesson(sessionId, false, "timebox");
+        onSaved();
+        guided.onComplete();
+        return;
+      }
       feedback(prefs, value.tap.correct);
       setMessage(value.tap.correct ? t.correct : t.mistake);
       if (modifier) return;
@@ -181,9 +213,19 @@ export function Lesson({ level, free, prefs, onExit, onSaved }: Props) {
         : nextIndex >= stages[stage].length;
       if ((correcting && completeStage) || (!correcting && value.tap.correct)) {
         if (!completeStage) setIndex(nextIndex);
-        else if (stage < 2) setMode("break");
-        else {
+        else if (stage < 2) {
+          if (guided) {
+            setStage(stage + 1);
+            setBuffer(lesson.initial?.[stage + 1] ?? "");
+            setIndex(0);
+          } else setMode("break");
+        } else {
           const summary = await finishLesson(sessionId, true);
+          if (guided) {
+            onSaved();
+            guided.onComplete();
+            return;
+          }
           setResult(summary);
           setMode("result");
           onSaved();

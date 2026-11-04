@@ -182,7 +182,7 @@ test("alvos: ensaio não grava, dificuldade e mão ficam no registro; histórico
     "Alvos · Concluída",
   );
   const data = await exportMotor(page);
-  expect(data.schemaVersion).toBe(4);
+  expect(data.schemaVersion).toBe(5);
   expect(data.motorRuns).toHaveLength(1);
   expect(data.movements).toHaveLength(10);
   await page.getByRole("button", { name: "Salvar e continuar" }).click();

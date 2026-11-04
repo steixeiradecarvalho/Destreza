@@ -63,6 +63,10 @@ export async function exportData(format: "json" | "csv") {
       native,
       motorRuns,
       movements,
+      adaptation,
+      keySkills,
+      dailyRuns,
+      diary,
     ] = await Promise.all([
       db.config.toArray(),
       db.perfil.toArray(),
@@ -72,9 +76,13 @@ export async function exportData(format: "json" | "csv") {
       db.referencias.toArray(),
       db.exercicios.toArray(),
       db.movimentos.toArray(),
+      db.adaptacao.toArray(),
+      db.teclas.toArray(),
+      db.diarias.toArray(),
+      db.diario.toArray(),
     ]);
     return {
-      schemaVersion: 4,
+      schemaVersion: 5,
       exportedAt: new Date().toISOString(),
       preferences,
       profiles,
@@ -84,6 +92,10 @@ export async function exportData(format: "json" | "csv") {
       native,
       motorRuns,
       movements,
+      adaptation,
+      keySkills,
+      dailyRuns,
+      diary,
     };
   });
   const body =

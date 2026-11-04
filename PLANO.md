@@ -7,8 +7,8 @@ Responsabilidade técnica: agente de desenvolvimento. Validação da experiênci
 | F0 Base | Concluída; Sergio confirmou abertura offline e preferências preservadas | Build/testes aprovados, publicação, instalação e abertura offline no celular |
 | F1 Teclado 1–6 | Concluída; resultado salvo e conforto confirmados por Sergio | Lição completa com dados salvos e conforto validado |
 | F2 Teclado nativo e níveis 7–12 | Concluída; teclado e exportação confirmados por Sergio | Referência repetível e exportável |
-| F3 Mãos 1, 2, 3 e 8 | Publicada e verificada; aguarda teste dos quatro exercícios no celular | Demonstração, ensaio, três dificuldades por exercício |
-| F4 Adaptação e sessão | Não iniciada | Sessão diária completa sem intervenção manual |
+| F3 Mãos 1, 2, 3 e 8 | Concluída; instruções e conforto dos gestos confirmados por Sergio | Demonstração, ensaio, três dificuldades por exercício |
+| F4 Adaptação e sessão | Implementada; verificações finais e publicação em andamento | Sessão diária completa sem intervenção manual |
 | F5 Painel, diário e demais exercícios | Não iniciada | Quatro visões com dados reais e conferência de sete dias simulados |
 | F6 Polimento e pessoas | Não iniciada | Sem bloqueios graves; acessibilidade manual; acompanhamento de quatro semanas |
 
@@ -130,9 +130,9 @@ O portão da F2 foi aprovado por Sergio: “Testei no celular. Ok. O teclado abr
 - [x] Migração v3 → v4 preservando referências anteriores; JSON inclui práticas e movimentos.
 - [x] Build, 20 testes unitários e 19 de navegador aprovados; revisão visual em 360×640 e texto a 200%.
 - [x] Publicação no GitHub Pages e conferência do endereço público.
-- [ ] Sergio: experimentar os quatro exercícios no celular, conferir resultados e conforto dos gestos.
+- [x] Sergio validou: “as instruções ficaram claras e os gestos confortáveis”.
 
-A F4, com adaptação e sessão diária, não foi iniciada. A F3 aguarda seu próprio portão no celular.
+O portão da F3 foi aprovado por Sergio; a F4 foi iniciada após essa confirmação.
 
 ## Retomada após limite de uso — 2026-11-04
 - Conferidos Git, relatórios locais e execuções no GitHub: nenhuma operação de teste ficou em andamento; build e 39 testes locais tinham concluído com sucesso.
@@ -151,4 +151,32 @@ A F4, com adaptação e sessão diária, não foi iniciada. A F3 aguarda seu pr�
 - Versão 0.4.0, commit de aplicação `399b94f`; https://github.com/steixeiradecarvalho/Destreza/actions/runs/41859859797 — build, 20 testes unitários, 19 de navegador e implantação aprovados.
 - Site público corresponde ao build local (`index-Cq-7PBoy.js`), com HTTP 200.
 - Conferência pública em Chromium com emulação 360×640 e relógio controlado para a demonstração: quatro exercícios disponíveis; ensaio e prática de Alvos concluídos; JSON com uma prática e exatamente dez movimentos; histórico reaberto offline. Nenhum erro JavaScript observado.
-- Retomada finalizada sem perda de arquivos. F3 permanece aberta para validação dos quatro exercícios e conforto no celular; F4 não iniciada.
+- Retomada finalizada sem perda de arquivos. A validação posterior de Sergio encerrou a F3 e autorizou o início da F4.
+
+
+## F4 — adaptação e sessão diária (0.5.0)
+- [x] Ajuste de um degrau a cada dez ações: ≥90% sobe, <70% desce; aplicação entre blocos, alterando um parâmetro.
+- [x] Recomendações separadas por exercício, mão solicitada e origem da interação; aquecimento e ensaio não ajustam dificuldade.
+- [x] Domínio por tecla/par nas últimas trinta ocorrências, métricas ausentes preservadas como nulas; agenda 1/2/4/8 dias.
+- [x] Revisão ponderada das teclas fracas e vencidas, restrita ao vocabulário da lição atual.
+- [x] Sessão de 10/11/12 minutos planejados, leve de oito minutos; aquecimento, teclado, mãos e fecho.
+- [x] Referência inicial/semanal dentro do orçamento; variedade A/B/C e alternância de mão entre sessões concluídas.
+- [x] Retomada das etapas concluídas; checkpoints de tempo a cada cinco segundos e ao guardar/sair.
+- [x] Fecho com nota opcional, desconforto e anotação local; sugestão de descanso no dia atual/seguinte.
+- [x] Sugestão de dia leve após duas quedas consecutivas entre três dias de prática; aviso de pausa após quinze minutos em primeiro plano.
+- [x] Migração v4 → v5, exportação JSON de adaptação, domínio, sessões diárias e diário.
+- [ ] Verificação final e publicação da F4.
+- [ ] Sergio: completar uma sessão no celular, avaliar a condução e conferir retomada e fecho.
+
+**Limites conscientes:** duração é aproximada, sem encerrar um gesto/rodada em andamento; fecho não obriga esperar um minuto. Demonstração, ensaio e pausas não contam no orçamento. Fechar pode perder até cinco segundos do contador; o cursor da atividade atual recomeça, preservando seus registros anteriores. Referência interrompida sempre recomeça por inteiro. Lembrete fica na página inicial, sem prometer notificações em segundo plano. Painel e consulta completa do diário permanecem F5.
+
+
+## Evidências locais da F4 — 2026-11-04
+- TypeScript estrito e build 0.5.0 aprovados; precache de aproximadamente 238 KiB.
+- Vitest: 27 testes aprovados (sete novos para adaptação, domínio, espaçamento, agenda, diário, idempotência e migração v4 → v5).
+- Playwright: 21 testes aprovados em 360×640. Fluxo diário percorreu Alvos, retomada offline na etapa seguinte, referência de 120.000 ms, calibração, prática de teclado por tempo, três blocos de Sequência com dificuldades 1/1/2 e fecho com nota, desconforto e anotação.
+- Tentativa de teclado encerrada pelo orçamento ficou salva com `completed=false`, sem desbloqueio indevido. Ensaio/aquecimento não alimentaram recomendação de dificuldade.
+- Sessão leve e aviso de quinze minutos verificados a 200%, sem transbordamento horizontal; capturas do fecho e aviso/plano revisadas visualmente.
+- Ajustadas as esperas dos testes para começar os relógios após a abertura efetiva da prática e instalação offline; registros conferidos em ordem temporal, não pela chave UUID.
+- A regressão completa das fases anteriores continua aprovada. Teste de migração F4 repetido após explicitar todas as tabelas do esquema v4: sete testes do arquivo aprovados.
+- Emulação usa relógio controlado e não comprova conforto físico, duração percebida ou teclado visual do sistema no aparelho. O portão de Sergio permanece necessário.

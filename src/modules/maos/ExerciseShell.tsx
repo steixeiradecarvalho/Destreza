@@ -1,3 +1,4 @@
+import { saveMotorAction, recommendedLevel } from "../../data/learning";
 import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
 import { db, type Preferences, type StoredMotorEvent } from "../../data/db";
 import { beginMotor, finishMotor } from "../../data/motor";
@@ -18,8 +19,16 @@ interface Props {
   prefs: Preferences;
   onExit: () => void;
   onSaved: () => void;
+  guided?: {
+    settings: MotorSettings;
+    dailyId: string;
+    warmup: boolean;
+    onComplete: () => void;
+    onRunning: (running: boolean) => void;
+    autoStart?: boolean;
+  };
 }
-export function ExerciseShell({ id, prefs, onExit, onSaved }: Props) {
+export function ExerciseShell({ id, prefs, onExit, onSaved, guided }: Props) {
   const module = exercises[id];
   const [mode, setMode] = useState<
     | "settings"
@@ -29,13 +38,15 @@ export function ExerciseShell({ id, prefs, onExit, onSaved }: Props) {
     | "active"
     | "finishing"
     | "result"
-  >("settings");
-  const [settings, setSettings] = useState<MotorSettings>({
-    difficulty: 1,
-    handMode: "dominant",
-    dominant: prefs.hand,
-    shape: "reta",
-  });
+  >(guided ? "demo" : "settings");
+  const [settings, setSettings] = useState<MotorSettings>(
+    guided?.settings ?? {
+      difficulty: 1,
+      handMode: "dominant",
+      dominant: prefs.hand,
+      shape: "reta",
+    },
+  );
   const [plan, setPlan] = useState<ExercisePlan>(() =>
     module.preparar(settings),
   );
@@ -79,6 +90,12 @@ export function ExerciseShell({ id, prefs, onExit, onSaved }: Props) {
     document.addEventListener("visibilitychange", hide);
     return () => document.removeEventListener("visibilitychange", hide);
   }, [mode]);
+  useLayoutEffect(() => {
+    guided?.onRunning(mode === "active" && !paused && !error);
+  }, [mode, paused, error]);
+  useEffect(() => {
+    if (guided?.autoStart) void start();
+  }, []);
   async function start() {
     setBusy(true);
     setError(false);
@@ -86,12 +103,22 @@ export function ExerciseShell({ id, prefs, onExit, onSaved }: Props) {
       void start();
     };
     try {
-      const prepared = module.preparar(settings);
+      const selected =
+        guided && !guided.warmup
+          ? { ...settings, difficulty: await recommendedLevel(id, settings) }
+          : settings;
+      setSettings(selected);
+      const prepared = module.preparar(selected);
       runId.current = await beginMotor(
         id,
         prepared.settings,
         prepared.parameters,
       );
+      if (guided)
+        await db.exercicios.update(runId.current, {
+          dailyId: guided.dailyId,
+          dailyRole: guided.warmup ? "warmup" : "hands",
+        });
       setPlan(prepared);
       setMessage("");
       setMode("active");
@@ -107,7 +134,7 @@ export function ExerciseShell({ id, prefs, onExit, onSaved }: Props) {
     setBusy(true);
     setError(false);
     try {
-      await db.movimentos.put(item.row);
+      await saveMotorAction(item.row, settings, !guided?.warmup);
       pending.current = null;
       feedback(prefs, item.row.correct);
       setMessage(item.row.correct ? t.motorGood : t.motorTryAgain);
@@ -151,6 +178,10 @@ export function ExerciseShell({ id, prefs, onExit, onSaved }: Props) {
       const summary = await finishMotor(runId.current, completed, module.medir);
       onSaved();
       if (completed) {
+        if (guided) {
+          guided.onComplete();
+          return;
+        }
         setResult(summary);
         setMode("result");
       } else onExit();

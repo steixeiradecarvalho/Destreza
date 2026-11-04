@@ -64,7 +64,7 @@ test("referência dura 120 segundos, exporta resultado e repete as mesmas frases
     page.getByRole("heading", { name: "Seu teste ficou registrado." }),
   ).toBeVisible();
   const data = await jsonDownload(page);
-  expect(data.schemaVersion).toBe(4);
+  expect(data.schemaVersion).toBe(5);
   expect(data.native).toHaveLength(1);
   expect(data.native[0]).toMatchObject({
     durationMs: 120000,

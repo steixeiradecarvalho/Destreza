@@ -1,4 +1,47 @@
 export const textos = {
+  shortPractice: "Prática curta salva",
+  dailyPlanTitle: "Seu plano de hoje",
+  dailyTitle: "Uma sessão para hoje",
+  dailyHelp:
+    "Aquecimento, teclado e mãos, no seu ritmo. A duração é aproximada: terminamos cada bloco antes de trocar. Demonstrações e pausas não contam no tempo. Você pode parar quando quiser.",
+  dailyRest:
+    "Você registrou desconforto recentemente. Hoje pode ser um dia de descanso. Volte quando se sentir confortável.",
+  dailyLightSuggestion:
+    "Seu desempenho caiu em dois dias seguidos. Que tal uma sessão mais leve hoje?",
+  dailyLight: "Sessão leve: cerca de 8 minutos",
+  dailyDuration: "Duração planejada:",
+  dailyMinutes: "minutos",
+  dailyStart: "Começar sessão diária",
+  dailyResume: "Retomar sessão",
+  dailyResumeHelp:
+    "Há uma sessão guardada. As etapas concluídas serão preservadas. A atividade atual recomeça com o tempo restante; a referência, se interrompida, recomeça por inteiro.",
+  dailyStep: "Etapa",
+  dailyTime: "Tempo aproximado restante nesta etapa:",
+  dailyStages: {
+    warmup: "Aquecimento",
+    reference: "Referência com teclado do celular",
+    typing: "Teclado: lição e revisão",
+    hands: "Prática das mãos",
+    closing: "Como foi para você?",
+  },
+  dailyClosingHelp:
+    "Reserve um momento para soltar as mãos. Se quiser, conte como foi a sessão. Tudo fica apenas neste aparelho.",
+  dailyRating: "Como foi a sessão? 1: difícil; 5: confortável",
+  dailySkipRating: "Prefiro não avaliar",
+  dailyPain: "Senti dor ou desconforto",
+  dailyPainHelp:
+    "Pare e descanse. Amanhã, sugeriremos um dia de descanso, sem cobranças.",
+  dailyNote: "Uma observação (opcional, até 300 caracteres)",
+  dailyFinish: "Salvar e encerrar sessão",
+  dailyDone: "Sessão encerrada",
+  dailySaved: "Sua sessão e sua avaliação ficaram salvas neste aparelho.",
+  dailyPauseTitle: "Um momento para descansar",
+  dailyPauseHelp:
+    "Já foram cerca de 15 minutos de uso. Se estiver confortável, abra e feche os dedos suavemente e mova os punhos sem forçar. Faça uma pausa quando quiser.",
+  sessionDuration: "Duração da sessão diária",
+  dailyReminder:
+    "Quando quiser, há uma sessão preparada para você. Não enviamos lembretes fora do aplicativo.",
+
   brand: "Destreza",
   motto: "Devagar, o gesto aprende.",
   eyebrow: "UM GESTO DE CADA VEZ",
@@ -41,9 +84,9 @@ export const textos = {
   homeTitle: "Seu espaço está pronto.",
   homeIntro: "Um pouco de prática, no seu ritmo.",
   phase: "UM POUCO DE PRÁTICA",
-  phaseTitle: "Seu teclado de treino chegou.",
+  phaseTitle: "Uma sessão preparada para você.",
   phaseBody:
-    "Doze níveis para conhecer as teclas e escrever mensagens. Uma letra de cada vez.",
+    "Combine teclado e mãos em uma sessão curta. A dificuldade se ajusta aos poucos; você pode parar quando quiser.",
   comfort: "Ajustar meu conforto",
   install: "Como instalar",
   about: "Sobre o Destreza",

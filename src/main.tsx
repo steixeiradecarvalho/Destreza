@@ -1,3 +1,5 @@
+import { RestPrompt } from "./ui/RestPrompt";
+import { DailySession } from "./ui/DailySession";
 import { render } from "preact";
 import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
 import { registerSW } from "virtual:pwa-register";
@@ -30,7 +32,8 @@ type Screen =
   | "lesson"
   | "reference"
   | "maos"
-  | "motor";
+  | "motor"
+  | "daily";
 function App() {
   const [motorRuns, setMotorRuns] = useState<MotorRun[]>([]);
   const [selectedMotor, setSelectedMotor] = useState<ExerciseId>("trilha");
@@ -174,19 +177,21 @@ function App() {
         ? t.settings
         : screen === "home"
           ? t.homeTitle
-          : screen === "install"
-            ? t.installTitle
-            : screen === "library"
-              ? t.libraryTitle
-              : screen === "reference"
-                ? t.reference
-                : screen === "maos"
-                  ? t.motorLibraryTitle
-                  : screen === "motor"
-                    ? t.motorNames[selectedMotor]
-                    : screen === "lesson"
-                      ? `${t.level} ${selected.level}`
-                      : t.aboutTitle;
+          : screen === "daily"
+            ? t.dailyTitle
+            : screen === "install"
+              ? t.installTitle
+              : screen === "library"
+                ? t.libraryTitle
+                : screen === "reference"
+                  ? t.reference
+                  : screen === "maos"
+                    ? t.motorLibraryTitle
+                    : screen === "motor"
+                      ? t.motorNames[selectedMotor]
+                      : screen === "lesson"
+                        ? `${t.level} ${selected.level}`
+                        : t.aboutTitle;
   return (
     <>
       <a class="skip" href="#main">
@@ -194,7 +199,10 @@ function App() {
       </a>
       <header
         class={
-          screen === "lesson" || screen === "reference" || screen === "motor"
+          screen === "lesson" ||
+          screen === "reference" ||
+          screen === "motor" ||
+          screen === "daily"
             ? "training-header"
             : ""
         }
@@ -210,7 +218,10 @@ function App() {
       <main
         id="main"
         class={
-          screen === "lesson" || screen === "reference" || screen === "motor"
+          screen === "lesson" ||
+          screen === "reference" ||
+          screen === "motor" ||
+          screen === "daily"
             ? "training-page"
             : ""
         }
@@ -219,6 +230,7 @@ function App() {
         <h1 ref={heading} tabIndex={-1}>
           {title}
         </h1>
+        {!loading && screen !== "welcome" && <RestPrompt />}
         {error && (
           <div role="alert" class="notice">
             <p>{t.error}</p>
@@ -303,6 +315,20 @@ function App() {
               </label>
             </section>
             <fieldset>
+              <legend>{t.sessionDuration}</legend>
+              {[10, 11, 12].map((value) => (
+                <label class="choice">
+                  <input
+                    type="radio"
+                    name="session-duration"
+                    checked={(prefs.sessionMinutes ?? 11) === value}
+                    onChange={() => change("sessionMinutes", value)}
+                  />
+                  {value} {t.dailyMinutes}
+                </label>
+              ))}
+            </fieldset>
+            <fieldset>
               <legend>{t.theme}</legend>
               {(["claro", "escuro", "contraste"] as const).map((value) => (
                 <label class="choice">
@@ -384,6 +410,7 @@ function App() {
         {!loading && screen === "home" && (
           <>
             <p class="lead">{t.homeIntro}</p>
+            <p>{t.dailyReminder}</p>
             <section class="card upcoming">
               <p class="eyebrow">{t.phase}</p>
               <h2>{t.phaseTitle}</h2>
@@ -408,7 +435,7 @@ function App() {
               <button
                 class="primary"
                 disabled={!historyReady || historyError}
-                onClick={() => openLesson(nextLevel, false)}
+                onClick={() => setScreen("daily")}
               >
                 {t.training}
               </button>
@@ -441,7 +468,9 @@ function App() {
                         {t.level} {session.level} ·{" "}
                         {session.status === "completed"
                           ? t.completed
-                          : t.interrupted}
+                          : session.endReason === "timebox"
+                            ? t.shortPractice
+                            : t.interrupted}
                         {attempt?.completed && (
                           <>
                             {" "}
@@ -585,6 +614,14 @@ function App() {
             <button onClick={back}>{t.back}</button>
           </>
         )}
+        {!loading && screen === "daily" && (
+          <DailySession
+            prefs={prefs}
+            onExit={back}
+            onSaved={() => void refreshLessons()}
+            history={references}
+          />
+        )}
         {!loading && screen === "motor" && (
           <ExerciseShell
             key={selectedMotor}
@@ -603,7 +640,8 @@ function App() {
         )}
         {screen !== "lesson" &&
           screen !== "reference" &&
-          screen !== "motor" && (
+          screen !== "motor" &&
+          screen !== "daily" && (
             <div class="status" role="status">
               {saved && <p>{t.saved}</p>}
               <p>
@@ -619,7 +657,8 @@ function App() {
         {update &&
           screen !== "lesson" &&
           screen !== "reference" &&
-          screen !== "motor" && (
+          screen !== "motor" &&
+          screen !== "daily" && (
             <aside class="notice">
               <p>{t.update}</p>
               <button onClick={() => void updater.current?.(true)}>
@@ -628,9 +667,10 @@ function App() {
             </aside>
           )}
       </main>
-      {screen !== "lesson" && screen !== "reference" && screen !== "motor" && (
-        <footer>{t.footer}</footer>
-      )}
+      {screen !== "lesson" &&
+        screen !== "reference" &&
+        screen !== "motor" &&
+        screen !== "daily" && <footer>{t.footer}</footer>}
     </>
   );
 }
