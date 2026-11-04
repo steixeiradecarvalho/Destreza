@@ -1,4 +1,5 @@
 import Dexie, { type Table } from "dexie";
+import type { MotorEvent, MotorSettings, MotorSummary } from "../core/motor";
 import { metrics, type Tap } from "../core/typing";
 export interface Preferences {
   id: "local";
@@ -84,7 +85,25 @@ export interface NativeRun {
   pasteBlocked: boolean;
   segments?: { model: string; value: string; complete: boolean }[];
 }
+export interface MotorRun {
+  id: string;
+  exercise: string;
+  contentVersion: number;
+  settings: MotorSettings;
+  parameters: Record<string, number | string>;
+  startedAt: number;
+  completedAt?: number;
+  status: "active" | "completed" | "interrupted";
+  summary?: MotorSummary;
+}
+export interface StoredMotorEvent extends MotorEvent {
+  id: string;
+  runId: string;
+  exercise: string;
+}
 export class DestrezaDB extends Dexie {
+  exercicios!: Table<MotorRun, string>;
+  movimentos!: Table<StoredMotorEvent, string>;
   referencias!: Table<NativeRun, string>;
   config!: Table<Preferences, string>;
   perfil!: Table<Profile, string>;
@@ -103,6 +122,10 @@ export class DestrezaDB extends Dexie {
     });
     this.version(3).stores({
       referencias: "&id, kind, status, startedAt, sessionId",
+    });
+    this.version(4).stores({
+      exercicios: "&id, exercise, startedAt, status",
+      movimentos: "&id, runId, exercise",
     });
   }
 }

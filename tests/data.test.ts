@@ -67,3 +67,37 @@ test("migração da F1 preserva sessões e cria registros nativos separados", as
   expect(await current.referencias.count()).toBe(0);
   await current.delete();
 });
+
+test("migração da F2 mantém referência e cria armazenamento separado de movimentos", async () => {
+  const { default: Dexie } = await import("dexie");
+  const old = new Dexie("destreza-upgrade-v4-test");
+  old
+    .version(3)
+    .stores({
+      config: "&id",
+      perfil: "&id",
+      sessoes: "&id, startedAt, status",
+      tentativas: "&id, sessionId, level",
+      toques: "&id, sessionId, attemptId",
+      referencias: "&id, kind, status, startedAt, sessionId",
+    });
+  await old.table("config").put({ ...defaults, scale: 200 });
+  await old
+    .table("referencias")
+    .put({
+      id: "f2",
+      kind: "reference",
+      startedAt: 1,
+      status: "completed",
+      durationMs: 120000,
+    });
+  old.close();
+  const current = new DestrezaDB("destreza-upgrade-v4-test");
+  expect(await current.config.get("local")).toMatchObject({ scale: 200 });
+  expect(await current.referencias.get("f2")).toMatchObject({
+    durationMs: 120000,
+  });
+  expect(await current.exercicios.count()).toBe(0);
+  expect(await current.movimentos.count()).toBe(0);
+  await current.delete();
+});

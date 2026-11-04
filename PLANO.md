@@ -6,8 +6,8 @@ Responsabilidade técnica: agente de desenvolvimento. Validação da experiênci
 | --- | --- | --- |
 | F0 Base | Concluída; Sergio confirmou abertura offline e preferências preservadas | Build/testes aprovados, publicação, instalação e abertura offline no celular |
 | F1 Teclado 1–6 | Concluída; resultado salvo e conforto confirmados por Sergio | Lição completa com dados salvos e conforto validado |
-| F2 Teclado nativo e níveis 7–12 | Publicada e verificada; aguarda teste e exportação no celular | Referência repetível e exportável |
-| F3 Mãos 1, 2, 3 e 8 | Não iniciada | Demonstração, ensaio, três dificuldades por exercício |
+| F2 Teclado nativo e níveis 7–12 | Concluída; teclado e exportação confirmados por Sergio | Referência repetível e exportável |
+| F3 Mãos 1, 2, 3 e 8 | Implementada e validada localmente; publicação em andamento | Demonstração, ensaio, três dificuldades por exercício |
 | F4 Adaptação e sessão | Não iniciada | Sessão diária completa sem intervenção manual |
 | F5 Painel, diário e demais exercícios | Não iniciada | Quatro visões com dados reais e conferência de sete dias simulados |
 | F6 Polimento e pessoas | Não iniciada | Sem bloqueios graves; acessibilidade manual; acompanhamento de quatro semanas |
@@ -98,9 +98,9 @@ Portão anterior aprovado por Sergio: resultado da lição salvo; teclas e naveg
 - [x] Testes de lógica, migração, exportação e fluxos dos seis novos níveis.
 - [x] Verificação final de produção e revisão visual da versão 0.3.0.
 - [x] Publicação pelo GitHub Actions e verificação do site público.
-- [ ] Sergio: completar referência no teclado real, repetir com as mesmas frases e exportar os arquivos no celular.
+- [x] Sergio confirmou execução no celular, abertura do teclado e exportação JSON/CSV; a repetibilidade já foi verificada automaticamente.
 
-Os exercícios de Mãos (F3) não foram iniciados. A F2 só encerra após o portão no celular.
+O portão da F2 foi aprovado por Sergio: “Testei no celular. Ok. O teclado abriu e os arquivos JSON/CSV foram exportados”. A F3 foi iniciada após essa confirmação.
 
 ## Evidências locais da F2 — 2026-11-03
 - TypeScript estrito e build 0.3.0 aprovados; precache de aproximadamente 186 KiB.
@@ -115,4 +115,34 @@ Os exercícios de Mãos (F3) não foram iniciados. A F2 só encerra após o port
 - Versão 0.3.0, commit de aplicação `36267e1`; https://github.com/steixeiradecarvalho/Destreza/actions/runs/41725409332 — verificação e implantação aprovadas (13 unitários + 14 de navegador).
 - Site público corresponde ao build local (`index-c_F_7ok8.js`), com HTTP 200.
 - Conferência pública em Chromium com emulação 360×640 e relógio controlado: teste encerrou com 120.000 ms registrados, sem erros para texto correto; downloads JSON e CSV foram lidos e validados; histórico reapareceu offline. Nenhum erro JavaScript observado.
-- A validação no teclado visual do celular permanece com Sergio: concluir a referência, repetir o início e abrir os arquivos exportados. F3 não iniciada.
+- Na entrega da F2 faltava o teste no aparelho. A confirmação posterior de Sergio sobre o teclado e a exportação encerrou esse portão.
+
+## F3 — primeira leva de Mãos (versão 0.4.0)
+- [x] Trilha: reta, onda, espiral e oito, com faixa em três larguras.
+- [x] Alvos: dez círculos por prática, com três tamanhos (mínimo 48 px).
+- [x] Sequência: três rodadas, com ordem de duas, três ou quatro peças.
+- [x] Gestos do dia a dia: foto, lista e mapa locais para toque, rolagem, pinça, giro e toque longo.
+- [x] Demonstração de cinco segundos, ensaio sem gravação e início explícito da prática.
+- [x] Mão dominante, outra mão e duas mãos; configuração guardada em cada prática.
+- [x] Pausa com preservação do progresso em tela; interrupção sem conclusão falsa.
+- [x] Registro incremental de ações e pontos; recuperação de erro de gravação sem duplicação.
+- [x] Contrato preparar/rodar/medir/parâmetros, sem acoplamento ao futuro motor de adaptação.
+- [x] Migração v3 → v4 preservando referências anteriores; JSON inclui práticas e movimentos.
+- [x] Build, 20 testes unitários e 19 de navegador aprovados; revisão visual em 360×640 e texto a 200%.
+- [ ] Publicação no GitHub Pages e conferência do endereço público.
+- [ ] Sergio: experimentar os quatro exercícios no celular, conferir resultados e conforto dos gestos.
+
+A F4, com adaptação e sessão diária, não foi iniciada. A F3 aguarda seu próprio portão no celular.
+
+## Retomada após limite de uso — 2026-11-04
+- Conferidos Git, relatórios locais e execuções no GitHub: nenhuma operação de teste ficou em andamento; build e 39 testes locais tinham concluído com sucesso.
+- Os arquivos da F3 estavam íntegros, ainda sem commit. A versão publicada continuava sendo a F2, com Actions aprovado.
+- Pendências encontradas: documentação, commit/push da F3, execução remota e conferência do site publicado. A retomada prossegue nessas etapas, sem repetir verificações já aprovadas.
+
+## Evidências da F3
+- Trilha e Sequência completadas em ensaio e prática; dados de ensaio ausentes do banco.
+- Alvos verificados com mão não dominante e dificuldade 3; falha de armazenamento simulada e recuperada, com exatamente dez movimentos finais.
+- Pinça e giro testados por eventos de dois pontos de toque no Chromium; toque longo validado após 600 ms. Alternativas por botões são identificadas, sem fabricar pontos de dedo.
+- Histórico de Mãos reaparece offline, e o JSON exportado contém práticas e movimentos.
+- Capturas da Trilha, Sequência, Gestos, resultados e biblioteca a 200% revisadas. Rótulos dos círculos e botão da biblioteca ajustados para leitura.
+- Emulação não substitui a validação de alcance e conforto dos gestos no celular de Sergio.

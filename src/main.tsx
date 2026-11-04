@@ -1,5 +1,5 @@
 import { render } from "preact";
-import { useEffect, useRef, useState } from "preact/hooks";
+import { useEffect, useLayoutEffect, useRef, useState } from "preact/hooks";
 import { registerSW } from "virtual:pwa-register";
 import {
   db,
@@ -9,6 +9,7 @@ import {
   type Session,
   type Attempt,
   type NativeRun,
+  type MotorRun,
 } from "./data/db";
 import { textos as t } from "./ui/textos";
 import "./ui/styles.css";
@@ -16,6 +17,8 @@ import { Lesson } from "./modules/teclado/Lesson";
 import { NativePractice } from "./modules/teclado/NativePractice";
 import { exportData } from "./data/export";
 import { referenceDay, referenceDue } from "./core/native";
+import { ExerciseShell } from "./modules/maos/ExerciseShell";
+import { exercises, type ExerciseId } from "./modules/maos/registry";
 import { unlockedLevel } from "./core/typing";
 type Screen =
   | "welcome"
@@ -25,8 +28,12 @@ type Screen =
   | "about"
   | "library"
   | "lesson"
-  | "reference";
+  | "reference"
+  | "maos"
+  | "motor";
 function App() {
+  const [motorRuns, setMotorRuns] = useState<MotorRun[]>([]);
+  const [selectedMotor, setSelectedMotor] = useState<ExerciseId>("trilha");
   const [references, setReferences] = useState<NativeRun[]>([]);
   const [exportMessage, setExportMessage] = useState("");
   const [selected, setSelected] = useState({ level: 1, free: false });
@@ -79,7 +86,7 @@ function App() {
       String(prefs.scale / 100),
     );
   }, [prefs]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!loading) heading.current?.focus();
   }, [screen, loading]);
   const change = <K extends keyof Preferences>(
@@ -105,7 +112,7 @@ function App() {
   async function refreshLessons() {
     setHistoryReady(false);
     try {
-      const [history, results, native] = await Promise.all([
+      const [history, results, native, motors] = await Promise.all([
         db.sessoes.orderBy("startedAt").reverse().limit(5).toArray(),
         db.tentativas.toArray(),
         db.referencias
@@ -113,10 +120,12 @@ function App() {
           .equals("reference")
           .reverse()
           .sortBy("startedAt"),
+        db.exercicios.orderBy("startedAt").reverse().limit(5).toArray(),
       ]);
       setSessions(history);
       setAttempts(results);
       setReferences(native);
+      setMotorRuns(motors);
       setHistoryError(false);
     } catch {
       setHistoryError(true);
@@ -125,7 +134,10 @@ function App() {
     }
   }
   useEffect(() => {
-    if (!loading && (screen === "home" || screen === "library"))
+    if (
+      !loading &&
+      (screen === "home" || screen === "library" || screen === "maos")
+    )
       void refreshLessons();
   }, [screen, loading]);
   const nextLevel = unlockedLevel(attempts);
@@ -168,9 +180,13 @@ function App() {
               ? t.libraryTitle
               : screen === "reference"
                 ? t.reference
-                : screen === "lesson"
-                  ? `${t.level} ${selected.level}`
-                  : t.aboutTitle;
+                : screen === "maos"
+                  ? t.motorLibraryTitle
+                  : screen === "motor"
+                    ? t.motorNames[selectedMotor]
+                    : screen === "lesson"
+                      ? `${t.level} ${selected.level}`
+                      : t.aboutTitle;
   return (
     <>
       <a class="skip" href="#main">
@@ -178,7 +194,9 @@ function App() {
       </a>
       <header
         class={
-          screen === "lesson" || screen === "reference" ? "training-header" : ""
+          screen === "lesson" || screen === "reference" || screen === "motor"
+            ? "training-header"
+            : ""
         }
       >
         <span class="brand">
@@ -192,7 +210,9 @@ function App() {
       <main
         id="main"
         class={
-          screen === "lesson" || screen === "reference" ? "training-page" : ""
+          screen === "lesson" || screen === "reference" || screen === "motor"
+            ? "training-page"
+            : ""
         }
       >
         <p class="eyebrow">{screen === "welcome" ? t.eyebrow : t.motto}</p>
@@ -393,6 +413,9 @@ function App() {
                 {t.training}
               </button>
               <button onClick={() => setScreen("library")}>{t.library}</button>
+              <button onClick={() => setScreen("maos")}>
+                {t.motorLibrary}
+              </button>
               <button onClick={() => setScreen("reference")}>
                 {t.reference}
               </button>
@@ -513,6 +536,64 @@ function App() {
               onSaved={() => void refreshLessons()}
             />
           ))}
+        {!loading && screen === "maos" && (
+          <>
+            <p>{t.motorLibraryIntro}</p>
+            <ul class="lesson-list motor-library">
+              {(Object.keys(exercises) as ExerciseId[]).map((id) => (
+                <li class="card">
+                  <h2>{t.motorNames[id]}</h2>
+                  <p>{t.motorDescriptions[id]}</p>
+                  <button
+                    class="primary"
+                    onClick={() => {
+                      setSelectedMotor(id);
+                      setScreen("motor");
+                    }}
+                  >
+                    {t.chooseMotor}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <section class="card">
+              <h2>{t.motorRecent}</h2>
+              {motorRuns.length ? (
+                <ol class="motor-history">
+                  {motorRuns.map((run) => (
+                    <li>
+                      {t.motorNames[run.exercise as ExerciseId] ?? run.exercise}{" "}
+                      ·{" "}
+                      {run.status === "completed" ? t.completed : t.interrupted}
+                      {run.summary && (
+                        <>
+                          {" "}
+                          ·{" "}
+                          {new Intl.NumberFormat("pt-BR", {
+                            maximumFractionDigits: 1,
+                          }).format(run.summary.accuracy)}
+                          %
+                        </>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              ) : (
+                <p>{t.noMotorHistory}</p>
+              )}
+            </section>
+            <button onClick={back}>{t.back}</button>
+          </>
+        )}
+        {!loading && screen === "motor" && (
+          <ExerciseShell
+            key={selectedMotor}
+            id={selectedMotor}
+            prefs={prefs}
+            onExit={() => setScreen("maos")}
+            onSaved={() => void refreshLessons()}
+          />
+        )}
         {!loading && screen === "reference" && (
           <NativePractice
             onExit={back}
@@ -520,29 +601,34 @@ function App() {
             history={references}
           />
         )}
-        {screen !== "lesson" && screen !== "reference" && (
-          <div class="status" role="status">
-            {saved && <p>{t.saved}</p>}
-            <p>
-              <span aria-hidden="true">{offline ? "●" : "○"} </span>
-              {swError
-                ? t.offlineError
-                : offline
-                  ? t.offlineReady
-                  : t.offlineWaiting}
-            </p>
-          </div>
-        )}
-        {update && screen !== "lesson" && screen !== "reference" && (
-          <aside class="notice">
-            <p>{t.update}</p>
-            <button onClick={() => void updater.current?.(true)}>
-              {t.updateButton}
-            </button>
-          </aside>
-        )}
+        {screen !== "lesson" &&
+          screen !== "reference" &&
+          screen !== "motor" && (
+            <div class="status" role="status">
+              {saved && <p>{t.saved}</p>}
+              <p>
+                <span aria-hidden="true">{offline ? "●" : "○"} </span>
+                {swError
+                  ? t.offlineError
+                  : offline
+                    ? t.offlineReady
+                    : t.offlineWaiting}
+              </p>
+            </div>
+          )}
+        {update &&
+          screen !== "lesson" &&
+          screen !== "reference" &&
+          screen !== "motor" && (
+            <aside class="notice">
+              <p>{t.update}</p>
+              <button onClick={() => void updater.current?.(true)}>
+                {t.updateButton}
+              </button>
+            </aside>
+          )}
       </main>
-      {screen !== "lesson" && screen !== "reference" && (
+      {screen !== "lesson" && screen !== "reference" && screen !== "motor" && (
         <footer>{t.footer}</footer>
       )}
     </>

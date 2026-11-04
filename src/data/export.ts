@@ -54,17 +54,27 @@ export function csvNative(rows: Record<string, unknown>[]) {
 }
 export async function exportData(format: "json" | "csv") {
   const result = await db.transaction("r", db.tables, async () => {
-    const [preferences, profiles, sessions, attempts, taps, native] =
-      await Promise.all([
-        db.config.toArray(),
-        db.perfil.toArray(),
-        db.sessoes.toArray(),
-        db.tentativas.toArray(),
-        db.toques.toArray(),
-        db.referencias.toArray(),
-      ]);
+    const [
+      preferences,
+      profiles,
+      sessions,
+      attempts,
+      taps,
+      native,
+      motorRuns,
+      movements,
+    ] = await Promise.all([
+      db.config.toArray(),
+      db.perfil.toArray(),
+      db.sessoes.toArray(),
+      db.tentativas.toArray(),
+      db.toques.toArray(),
+      db.referencias.toArray(),
+      db.exercicios.toArray(),
+      db.movimentos.toArray(),
+    ]);
     return {
-      schemaVersion: 3,
+      schemaVersion: 4,
       exportedAt: new Date().toISOString(),
       preferences,
       profiles,
@@ -72,6 +82,8 @@ export async function exportData(format: "json" | "csv") {
       attempts,
       taps,
       native,
+      motorRuns,
+      movements,
     };
   });
   const body =

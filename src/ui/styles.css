@@ -615,3 +615,189 @@ footer {
 .keyboard.large-labels .suggestion-bar {
   flex-direction: column;
 }
+
+.motor-board {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  margin: 16px 0;
+  overflow: hidden;
+}
+.target-board {
+  touch-action: manipulation;
+}
+.motor-target {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  text-align: center;
+  line-height: 1;
+  font-size: 20px;
+  touch-action: manipulation;
+}
+.trace-board,
+.gesture-board {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.trace-board canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.motor-direction,
+.sequence-board,
+.demo-sequence {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 16px 0;
+}
+.motor-direction button {
+  min-width: 0;
+  margin: 0;
+  text-align: center;
+}
+.sequence-piece {
+  min-height: 96px;
+  font-size: 1.6rem;
+  text-align: center;
+  margin: 0;
+}
+.sequence-piece.lit,
+.demo-sequence .lit {
+  background: var(--accent);
+  color: var(--on-accent);
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+.sequence-piece:disabled {
+  opacity: 1;
+}
+.motor-feedback {
+  min-height: 1.6em;
+}
+.exercise-shell details {
+  margin: 20px 0;
+}
+.exercise-shell summary {
+  min-height: 64px;
+  padding: 16px 0;
+  cursor: pointer;
+}
+.motor-demo {
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+.motor-demo svg {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+}
+.demo-path {
+  fill: none;
+  stroke: var(--soft);
+  stroke-width: 24;
+  stroke-linecap: round;
+}
+.demo-start {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+}
+.demo-finger {
+  fill: var(--accent);
+  stroke: var(--on-accent);
+  stroke-width: 3;
+}
+.demo-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+}
+.motor-demo text {
+  fill: var(--ink);
+  font: 20px system-ui;
+}
+.demo-sequence span {
+  display: grid;
+  place-items: center;
+  min-height: 64px;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+}
+.gesture-picture,
+.gesture-outline {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 144px;
+  height: 100px;
+  border: 3px solid var(--accent);
+  border-radius: 8px;
+  background: var(--soft);
+  pointer-events: none;
+}
+.gesture-picture svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+}
+.gesture-outline {
+  border: 3px dashed var(--ink);
+  background: transparent;
+  opacity: 0.8;
+}
+.scroll-practice {
+  position: relative;
+  margin: 16px 0;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.gesture-list {
+  position: relative;
+  height: 260px;
+  overflow-y: auto;
+  touch-action: pan-y;
+  background: var(--surface);
+  scrollbar-width: auto;
+}
+.gesture-list-item {
+  min-height: 84px;
+  padding: 20px;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+.scroll-guide {
+  position: absolute;
+  top: calc(50% - 24px);
+  left: 0;
+  right: 0;
+  height: 48px;
+  border-top: 3px dashed var(--accent);
+  border-bottom: 3px dashed var(--accent);
+  z-index: 1;
+  pointer-events: none;
+}
+.motor-history {
+  padding-left: 24px;
+}
+.motor-history li {
+  margin-bottom: 12px;
+  overflow-wrap: anywhere;
+}

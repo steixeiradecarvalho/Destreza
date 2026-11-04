@@ -13,6 +13,8 @@
 - Site estático em https://steixeiradecarvalho.github.io/Destreza/; base, manifesto e escopo do SW devem respeitar `/Destreza/`.
 - Nunca apagar ou recriar o banco para atualizar a aplicação. Evoluir o esquema com migrações Dexie e testes.
 - Atualizações devem ser oferecidas ao usuário, sem recarregar automaticamente um treino em andamento.
+- Exercícios de Mãos implementam o contrato preparar/rodar/medir/parametros em `src/modules/maos`; ensaios não abrem registros.
+- Diferencie ponteiros reais de alternativas por botões/teclado. Nunca converta coordenadas virtuais em medidas de movimento físico; a mão solicitada não prova a mão utilizada.
 
 ## Interface e voz
 - Português brasileiro, adulto, claro e caloroso. Sem infantilização, pressão, punição por erros ou alegações médicas/cognitivas.

@@ -6,7 +6,7 @@ PWA em português brasileiro para praticar digitação no celular. Piloto local,
 
 Versão publicada: https://steixeiradecarvalho.github.io/Destreza/.
 
-As **F0 e F1** foram validadas por Sergio no celular. A versão **F2 (0.3.0)** acrescenta níveis 7–12, teclado nativo, referência de dois minutos e exportação JSON/CSV. Consulte [PLANO.md](PLANO.md) e [DECISOES.md](DECISOES.md).
+As **F0, F1 e F2** foram validadas por Sergio no celular. A versão **F3 (0.4.0)** acrescenta Trilha, Alvos, Sequência e Gestos do dia a dia, com demonstração, ensaio e três dificuldades. Consulte [PLANO.md](PLANO.md) e [DECISOES.md](DECISOES.md).
 
 ## Executar
 
@@ -53,7 +53,7 @@ A configuração segue o [guia de implantação do Vite](https://vite.dev/guide/
 
 ## Dados
 
-Preferências, versão do aceite, calibração, sessões, tentativas, toques e resultados nativos ficam no IndexedDB local. A migração da F0 preserva as preferências. Sem analytics, fontes externas ou envio de conteúdo pessoal. Arquivos do app são servidos pelo GitHub Pages. Limpar os dados do navegador pode apagar as preferências e o histórico futuro. O app não faz alegações médicas.
+Preferências, versão do aceite, calibração, sessões, tentativas, toques, resultados nativos, práticas de mãos e movimentos ficam no IndexedDB local. A migração da F0 preserva as preferências. Sem analytics, fontes externas ou envio de conteúdo pessoal. Arquivos do app são servidos pelo GitHub Pages. Limpar os dados do navegador pode apagar as preferências e o histórico futuro. O app não faz alegações médicas.
 
 ## Teste da F1 no celular
 
@@ -79,3 +79,16 @@ Uma pausa pode ser retomada enquanto a tela estiver aberta. **Guardar e sair** c
 8. Fechar e reabrir em modo avião: os testes anteriores devem aparecer em **Meus testes**.
 
 Sair do aplicativo durante a referência interrompe o teste; o registro permanece, mas não entra como medição completa. A primeira medição válida inicia o dia 1 do acompanhamento. O aplicativo sugere novos testes nos dias 7, 14, 21 e 28. O CSV desta fase cobre os registros nativos; o JSON inclui todos os dados atuais.
+
+## Teste da F3 no celular
+
+1. Abrir com internet e escolher **Atualizar agora**, se aparecer. Entrar em **Exercícios de mãos**.
+2. Escolher um exercício, a dificuldade e a mão. Na Trilha, também escolher o caminho.
+3. Observar a demonstração (cinco segundos), fazer o **ensaio** e depois tocar **Começar exercício**. O ensaio não é gravado.
+4. **Trilha:** começar no círculo 1, seguir a faixa e soltar no círculo 2. No oito, voltar ao círculo 1. São três traços. Há alternativa por setas/botões.
+5. **Alvos:** tocar nos dez círculos, um de cada vez. **Sequência:** observar a ordem, tocar **Memorizei. Vou repetir** e repetir em três rodadas.
+6. **Gestos:** tocar a foto; rolar a lista até alinhar Conversa com Ana à faixa; ampliar o mapa com dois dedos; girar a foto; segurar e soltar. Botões de apoio oferecem alternativa ao gesto e são identificados no registro.
+7. Conferir o resultado e **Últimas práticas de mãos**. Testar a pausa e a reabertura offline. O JSON das configurações inclui práticas e pontos; o CSV continua dos registros no teclado nativo.
+8. Relatar conforto, clareza da demonstração e qualquer dificuldade com os dois dedos. Essa validação encerra a F3 e libera a F4.
+
+O aplicativo registra a mão solicitada; não detecta qual mão foi usada. A precisão descreve esta atividade. A figura é um mapa/foto de treino local, sem câmera ou localização. Se o aplicativo for fechado antes do fim, os movimentos já gravados permanecem, mas a prática não é marcada como concluída.
