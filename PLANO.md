@@ -8,7 +8,7 @@ Responsabilidade técnica: agente de desenvolvimento. Validação da experiênci
 | F1 Teclado 1–6 | Concluída; resultado salvo e conforto confirmados por Sergio | Lição completa com dados salvos e conforto validado |
 | F2 Teclado nativo e níveis 7–12 | Concluída; teclado e exportação confirmados por Sergio | Referência repetível e exportável |
 | F3 Mãos 1, 2, 3 e 8 | Concluída; instruções e conforto dos gestos confirmados por Sergio | Demonstração, ensaio, três dificuldades por exercício |
-| F4 Adaptação e sessão | Implementada; verificações finais e publicação em andamento | Sessão diária completa sem intervenção manual |
+| F4 Adaptação e sessão | Publicada e verificada; aguarda sessão completa no celular | Sessão diária completa sem intervenção manual |
 | F5 Painel, diário e demais exercícios | Não iniciada | Quatro visões com dados reais e conferência de sete dias simulados |
 | F6 Polimento e pessoas | Não iniciada | Sem bloqueios graves; acessibilidade manual; acompanhamento de quatro semanas |
 
@@ -165,7 +165,7 @@ O portão da F3 foi aprovado por Sergio; a F4 foi iniciada após essa confirmaç
 - [x] Fecho com nota opcional, desconforto e anotação local; sugestão de descanso no dia atual/seguinte.
 - [x] Sugestão de dia leve após duas quedas consecutivas entre três dias de prática; aviso de pausa após quinze minutos em primeiro plano.
 - [x] Migração v4 → v5, exportação JSON de adaptação, domínio, sessões diárias e diário.
-- [ ] Verificação final e publicação da F4.
+- [x] Verificação final, revisão visual e publicação da F4.
 - [ ] Sergio: completar uma sessão no celular, avaliar a condução e conferir retomada e fecho.
 
 **Limites conscientes:** duração é aproximada, sem encerrar um gesto/rodada em andamento; fecho não obriga esperar um minuto. Demonstração, ensaio e pausas não contam no orçamento. Fechar pode perder até cinco segundos do contador; o cursor da atividade atual recomeça, preservando seus registros anteriores. Referência interrompida sempre recomeça por inteiro. Lembrete fica na página inicial, sem prometer notificações em segundo plano. Painel e consulta completa do diário permanecem F5.
@@ -180,3 +180,10 @@ O portão da F3 foi aprovado por Sergio; a F4 foi iniciada após essa confirmaç
 - Ajustadas as esperas dos testes para começar os relógios após a abertura efetiva da prática e instalação offline; registros conferidos em ordem temporal, não pela chave UUID.
 - A regressão completa das fases anteriores continua aprovada. Teste de migração F4 repetido após explicitar todas as tabelas do esquema v4: sete testes do arquivo aprovados.
 - Emulação usa relógio controlado e não comprova conforto físico, duração percebida ou teclado visual do sistema no aparelho. O portão de Sergio permanece necessário.
+
+
+## Publicação da F4 confirmada — 2026-11-04
+- Versão 0.5.0, commit de aplicação `f904fbc`; https://github.com/steixeiradecarvalho/Destreza/actions/runs/41896299861 — build, 27 testes unitários, 21 testes de navegador e implantação aprovados.
+- Site público corresponde ao build local (`index-puGkiBiH.js`), com HTTP 200.
+- Conferência pública em Chromium 360×640 com relógio controlado: sessão diária iniciada, ensaio e aquecimento Alvos concluídos; JSON esquema 5 contém uma sessão diária, uma etapa concluída e dez movimentos, sem adaptação indevida pelo aquecimento. Retomada offline reabriu a referência na etapa 2/5. Nenhum erro JavaScript observado.
+- Documentação e roteiro de celular atualizados. F4 aguarda Sergio completar uma sessão e validar condução, duração e conforto; F5 não iniciada.
