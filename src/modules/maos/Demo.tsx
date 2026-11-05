@@ -34,8 +34,148 @@ export function Demo({
     current = seq[Math.min(2, Math.floor(frame / 34))];
   const gestures = ["tap", "scroll", "pinch", "rotate", "hold"] as const,
     gesture = gestures[Math.min(4, Math.floor(frame / 20))];
+  const wordLabels = Array.from(
+    t.wordTraceWords[Number(plan.parameters.length) - 3] ?? "asa",
+  );
+  const positions: Record<string, { x: number; y: number }> = {
+    a: { x: 60, y: 90 },
+    s: { x: 125, y: 90 },
+    d: { x: 190, y: 90 },
+    e: { x: 190, y: 30 },
+    c: { x: 210, y: 150 },
+  };
+  const demoNodes =
+    id === "palavra"
+      ? [...new Set(wordLabels)].map((label) => ({
+          label,
+          ...positions[label],
+        }))
+      : Array.from({ length: 9 }, (_, i) => ({
+          label: String(i + 1),
+          x: 50 + (i % 3) * 100,
+          y: 30 + Math.floor(i / 3) * 60,
+        }));
+  const demoPath =
+    id === "palavra"
+      ? wordLabels.map((label) => positions[label])
+      : [demoNodes[0], demoNodes[4], demoNodes[2]];
+  const progress = Math.min(0.999, frame / 100) * (demoPath.length - 1),
+    segment = Math.floor(progress),
+    fraction = progress - segment;
+  const demoCursor = {
+    x:
+      demoPath[segment].x +
+      (demoPath[segment + 1].x - demoPath[segment].x) * fraction,
+    y:
+      demoPath[segment].y +
+      (demoPath[segment + 1].y - demoPath[segment].y) * fraction,
+  };
   return (
     <div class="motor-demo" role="img" aria-label={t.motorDescriptions[id]}>
+      {(id === "dedilhado" || id === "ritmo") && (
+        <>
+          <p>{id === "dedilhado" ? t.fingerHelp : t.rhythmHelp}</p>
+          <div class="demo-sequence">
+            {(id === "dedilhado"
+              ? t.fingerNames.slice(0, Number(plan.parameters.zones))
+              : t.rhythmSides
+            ).map((label, i) => (
+              <span
+                class={
+                  !reducedMotion &&
+                  (id === "ritmo"
+                    ? Math.floor(frame / (1200 / Number(plan.parameters.bpm))) %
+                      2
+                    : Math.floor(frame / 20) %
+                      Number(plan.parameters.zones)) === i
+                    ? "lit"
+                    : ""
+                }
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+        </>
+      )}
+      {id === "classificar" && (
+        <>
+          <p>{t.classifyHelp}</p>
+          <svg viewBox="0 0 300 210" aria-hidden="true">
+            <rect
+              x="55"
+              y="100"
+              width="190"
+              height="100"
+              rx="12"
+              class="demo-start"
+            />
+            <text x="150" y="182" text-anchor="middle">
+              {t.classifyGroups[0][0]}
+            </text>
+            <path d="M150 65V110" class="demo-line" stroke-dasharray="5 5" />
+            <g
+              transform={`translate(0 ${reducedMotion ? 0 : Math.min(85, frame * 1.2)})`}
+            >
+              <rect
+                x="80"
+                y="10"
+                width="140"
+                height="45"
+                rx="8"
+                class="demo-start"
+              />
+              <text x="150" y="40" text-anchor="middle">
+                {t.classifyCards[0]}
+              </text>
+              {!reducedMotion && (
+                <circle cx="180" cy="48" r="9" class="demo-finger" />
+              )}
+            </g>
+          </svg>
+        </>
+      )}
+      {(id === "palavra" || id === "padrao") && (
+        <>
+          <p>{id === "palavra" ? t.wordTraceHelp : t.patternHelp}</p>
+          {id === "palavra" && (
+            <p>
+              {t.wordTracePrompt}{" "}
+              {t.wordTraceWords[Number(plan.parameters.length) - 3]}
+            </p>
+          )}
+          <svg viewBox="0 0 300 180" aria-hidden="true">
+            <polyline
+              class="demo-line"
+              points={demoPath.map((p) => `${p.x},${p.y}`).join(" ")}
+              stroke-dasharray="5 5"
+            />
+            {demoNodes.map((node) => (
+              <g>
+                <rect
+                  x={node.x - 24}
+                  y={node.y - 24}
+                  width="48"
+                  height="48"
+                  rx="12"
+                  class="demo-start"
+                />
+                <text x={node.x} y={node.y + 7} text-anchor="middle">
+                  {node.label}
+                </text>
+              </g>
+            ))}
+            {!reducedMotion && (
+              <circle
+                cx={demoCursor.x}
+                cy={demoCursor.y}
+                r="10"
+                class="demo-finger"
+              />
+            )}
+          </svg>
+        </>
+      )}
       {id === "trilha" && (
         <svg viewBox="0 0 300 180" aria-hidden="true">
           <polyline

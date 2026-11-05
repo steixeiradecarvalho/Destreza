@@ -6,7 +6,7 @@ PWA em português brasileiro para praticar digitação no celular. Piloto local,
 
 Versão publicada: https://steixeiradecarvalho.github.io/Destreza/.
 
-As **F0–F3** foram validadas por Sergio no celular. A versão **F4 (0.5.0)** acrescenta sessão diária, adaptação gradual da dificuldade, revisão de teclas e fecho com avaliação opcional. Consulte [PLANO.md](PLANO.md) e [DECISOES.md](DECISOES.md).
+As **F0–F4** foram validadas por Sergio no celular. A versão **F5 (0.6.0)** acrescenta painel de evolução, consulta do diário, exportação completa, exclusão dos dados e cinco novos exercícios de mãos. Consulte [PLANO.md](PLANO.md) e [DECISOES.md](DECISOES.md).
 
 ## Executar
 
@@ -105,3 +105,17 @@ O aplicativo registra a mão solicitada; não detecta qual mão foi usada. A pre
 7. Relatar se conseguiu completar a sessão sozinho, se as transições ficaram claras e se o tempo e a alternância de mãos ficaram confortáveis.
 
 A prática por tempo conserva os toques sem registrar uma lição inteira como concluída. A referência interrompida precisa recomeçar por inteiro. Não há notificação em segundo plano: o lembrete aparece na página inicial. O JSON inclui as sessões diárias e o diário; o painel e a consulta do diário serão F5.
+
+
+## Teste da F5 no celular
+
+1. Abrir com internet e escolher **Atualizar agora**, se oferecido, fora de um treino. Conferir **Minha evolução** e **Meu diário** no início.
+2. Em **Minha evolução**, conferir semanas, domínio das teclas (toque no cartão para abrir a precisão e o desvio), testes nativos e dias de prática. Alternar a forma de praticar; uma origem sem dados deve informar ausência de medidas. Somente seu histórico real aparece no aparelho.
+3. Abrir **Meu diário** e conferir notas/anotações da F4. A nota média não prova causa de mudança de desempenho. O JSON preserva todos os registros anteriores.
+4. Em **Exercícios de mãos**, experimentar **Dedilhado**, **Ritmo a duas mãos**, **Arrastar e classificar**, **Palavra no traço** e **Cópia de padrão**. Cada um tem demonstração, ensaio sem registro e três dificuldades. Apoiar o celular e confirmar antes de Ritmo.
+5. Dedilhado orienta o dedo, sem detectar sua identidade. Classificar muda de grupos para primeira letra na metade. Palavra pede traço único; **Formar palavra por botões** é alternativa identificada. Padrão esconde o modelo antes de responder, por toques, traço ou teclado.
+6. Conferir resultado, pausar quando desejar, fechar e reabrir offline. Em **Ajustar meu conforto**, baixar JSON e CSV. O CSV agora reúne todas as coleções; a coluna `collection` identifica o tipo de registro, e células com listas/objetos contêm JSON. Datas são timestamps em ms; duração/reação em ms e coordenadas em px CSS. Use o JSON para preservar uma cópia completa.
+7. Se quiser conferir a proteção de exclusão, tocar **Preparar exclusão → Desfazer preparação**: isso não apaga nada. A exclusão real requer marcar o entendimento e tocar **Apagar definitivamente todos os dados**. Depois dessa confirmação, não há desfazer nem importação de backup no piloto. Evite a confirmação final se quiser conservar seu histórico de teste.
+8. Relatar clareza do painel, conforto dos cinco exercícios e se os registros antigos permaneceram. A validação de Sergio encerra a F5; F6 continua aguardando esse portão.
+
+A variação fina do traço só aparece com eventos suficientemente frequentes; é uma descrição em pixels, sem interpretação médica. Os novos exercícios são escolhidos na biblioteca; o ciclo diário da F4 permanece. O vocabulário continua sendo o conjunto inicial do piloto; revisão editorial completa e testes com pessoas permanecem na F6.

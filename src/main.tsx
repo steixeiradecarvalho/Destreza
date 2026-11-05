@@ -1,3 +1,5 @@
+import { Evolution } from "./ui/Evolution";
+import { DeleteData } from "./ui/DeleteData";
 import { RestPrompt } from "./ui/RestPrompt";
 import { DailySession } from "./ui/DailySession";
 import { render } from "preact";
@@ -33,7 +35,9 @@ type Screen =
   | "reference"
   | "maos"
   | "motor"
-  | "daily";
+  | "daily"
+  | "evolution"
+  | "diary";
 function App() {
   const [motorRuns, setMotorRuns] = useState<MotorRun[]>([]);
   const [selectedMotor, setSelectedMotor] = useState<ExerciseId>("trilha");
@@ -72,6 +76,7 @@ function App() {
   }
   useEffect(() => {
     void load();
+    void navigator.serviceWorker?.ready.then(() => setOffline(true));
     updater.current = registerSW({
       onOfflineReady: () => setOffline(true),
       onNeedRefresh: () => setUpdate(true),
@@ -169,29 +174,34 @@ function App() {
     setScreen("lesson");
   };
   const back = () => setScreen("home");
-  const title = loading
-    ? t.loading
-    : screen === "welcome"
-      ? t.welcome
-      : screen === "settings"
-        ? t.settings
-        : screen === "home"
-          ? t.homeTitle
-          : screen === "daily"
-            ? t.dailyTitle
-            : screen === "install"
-              ? t.installTitle
-              : screen === "library"
-                ? t.libraryTitle
-                : screen === "reference"
-                  ? t.reference
-                  : screen === "maos"
-                    ? t.motorLibraryTitle
-                    : screen === "motor"
-                      ? t.motorNames[selectedMotor]
-                      : screen === "lesson"
-                        ? `${t.level} ${selected.level}`
-                        : t.aboutTitle;
+  const title =
+    screen === "evolution"
+      ? t.evolution
+      : screen === "diary"
+        ? t.diaryTitle
+        : loading
+          ? t.loading
+          : screen === "welcome"
+            ? t.welcome
+            : screen === "settings"
+              ? t.settings
+              : screen === "home"
+                ? t.homeTitle
+                : screen === "daily"
+                  ? t.dailyTitle
+                  : screen === "install"
+                    ? t.installTitle
+                    : screen === "library"
+                      ? t.libraryTitle
+                      : screen === "reference"
+                        ? t.reference
+                        : screen === "maos"
+                          ? t.motorLibraryTitle
+                          : screen === "motor"
+                            ? t.motorNames[selectedMotor]
+                            : screen === "lesson"
+                              ? `${t.level} ${selected.level}`
+                              : t.aboutTitle;
   return (
     <>
       <a class="skip" href="#main">
@@ -402,6 +412,17 @@ function App() {
               </button>
               <p role="status">{exportMessage}</p>
             </section>
+            <DeleteData
+              onDeleted={() => {
+                setPrefs(defaults);
+                setSaved(false);
+                setSessions([]);
+                setAttempts([]);
+                setReferences([]);
+                setMotorRuns([]);
+                setScreen("welcome");
+              }}
+            />
             <button class="primary" disabled={saving}>
               {saving ? t.saving : t.save}
             </button>
@@ -446,6 +467,10 @@ function App() {
               <button onClick={() => setScreen("reference")}>
                 {t.reference}
               </button>
+              <button onClick={() => setScreen("evolution")}>
+                {t.evolution}
+              </button>
+              <button onClick={() => setScreen("diary")}>{t.diaryTitle}</button>
               <button onClick={() => setScreen("settings")}>
                 {t.comfort}
                 <span aria-hidden="true"> →</span>
@@ -613,6 +638,9 @@ function App() {
             </section>
             <button onClick={back}>{t.back}</button>
           </>
+        )}
+        {!loading && (screen === "evolution" || screen === "diary") && (
+          <Evolution diaryOnly={screen === "diary"} onExit={back} />
         )}
         {!loading && screen === "daily" && (
           <DailySession

@@ -52,6 +52,37 @@ export function csvNative(rows: Record<string, unknown>[]) {
     ].join("\r\n")
   );
 }
+export function csvAll(data: Record<string, unknown>) {
+  const records = Object.entries(data).flatMap(([collection, rows]) =>
+    Array.isArray(rows)
+      ? rows.map((row) => ({ collection, ...row }) as Record<string, unknown>)
+      : [],
+  );
+  const keys = [
+    ...new Set([
+      "collection",
+      "id",
+      ...records.flatMap((row) => Object.keys(row)),
+    ]),
+  ];
+  return (
+    "\uFEFF" +
+    [
+      keys.join(","),
+      ...records.map((row) =>
+        keys
+          .map((key) =>
+            cell(
+              typeof row[key] === "object" && row[key] !== null
+                ? JSON.stringify(row[key])
+                : row[key],
+            ),
+          )
+          .join(","),
+      ),
+    ].join("\r\n")
+  );
+}
 export async function exportData(format: "json" | "csv") {
   const result = await db.transaction("r", db.tables, async () => {
     const [
@@ -99,9 +130,7 @@ export async function exportData(format: "json" | "csv") {
     };
   });
   const body =
-    format === "json"
-      ? JSON.stringify(result, null, 2)
-      : csvNative(result.native as unknown as Record<string, unknown>[]);
+    format === "json" ? JSON.stringify(result, null, 2) : csvAll(result);
   const blob = new Blob([body], {
     type:
       format === "json"

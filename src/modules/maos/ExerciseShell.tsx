@@ -30,6 +30,7 @@ interface Props {
 }
 export function ExerciseShell({ id, prefs, onExit, onSaved, guided }: Props) {
   const module = exercises[id];
+  const [supported, setSupported] = useState(false);
   const [mode, setMode] = useState<
     | "settings"
     | "demo"
@@ -109,6 +110,7 @@ export function ExerciseShell({ id, prefs, onExit, onSaved, guided }: Props) {
           : settings;
       setSettings(selected);
       const prepared = module.preparar(selected);
+      setSettings(prepared.settings);
       runId.current = await beginMotor(
         id,
         prepared.settings,
@@ -224,20 +226,37 @@ export function ExerciseShell({ id, prefs, onExit, onSaved, guided }: Props) {
               </label>
             ))}
           </fieldset>
-          <fieldset>
-            <legend>{t.motorHand}</legend>
-            {(["dominant", "other", "both"] as HandMode[]).map((value) => (
+          {id !== "ritmo" && (
+            <fieldset>
+              <legend>{t.motorHand}</legend>
+              {(["dominant", "other", "both"] as HandMode[]).map((value) => (
+                <label class="choice">
+                  <input
+                    type="radio"
+                    name="motor-hand"
+                    checked={settings.handMode === value}
+                    onChange={() =>
+                      setSettings({ ...settings, handMode: value })
+                    }
+                  />
+                  {t.motorHandNames[value]}
+                </label>
+              ))}
+            </fieldset>
+          )}
+          {id === "ritmo" && (
+            <>
+              <p>{t.supportedHelp}</p>
               <label class="choice">
                 <input
-                  type="radio"
-                  name="motor-hand"
-                  checked={settings.handMode === value}
-                  onChange={() => setSettings({ ...settings, handMode: value })}
+                  type="checkbox"
+                  checked={supported}
+                  onChange={(e) => setSupported(e.currentTarget.checked)}
                 />
-                {t.motorHandNames[value]}
+                {t.supported}
               </label>
-            ))}
-          </fieldset>
+            </>
+          )}
           {settings.handMode === "both" && <p>{t.motorBothHelp}</p>}
           {id === "trilha" && (
             <fieldset>
@@ -261,6 +280,7 @@ export function ExerciseShell({ id, prefs, onExit, onSaved, guided }: Props) {
           )}
           <button
             class="primary"
+            disabled={id === "ritmo" && !supported}
             onClick={() => {
               setPlan(module.preparar(settings));
               setMode("demo");
@@ -308,10 +328,7 @@ export function ExerciseShell({ id, prefs, onExit, onSaved, guided }: Props) {
             </h2>
             {mode === "trial" && <p>{t.trialHelp}</p>}
             <p class="motor-feedback" role="status">
-              {message ||
-                (id === "trilha" || id === "gestos"
-                  ? t.motto
-                  : t.motorDescriptions[id])}
+              {message || t.motto}
             </p>
             <View
               key={mode === "trial" ? "trial" : runId.current}

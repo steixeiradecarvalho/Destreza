@@ -8,8 +8,8 @@ Responsabilidade técnica: agente de desenvolvimento. Validação da experiênci
 | F1 Teclado 1–6 | Concluída; resultado salvo e conforto confirmados por Sergio | Lição completa com dados salvos e conforto validado |
 | F2 Teclado nativo e níveis 7–12 | Concluída; teclado e exportação confirmados por Sergio | Referência repetível e exportável |
 | F3 Mãos 1, 2, 3 e 8 | Concluída; instruções e conforto dos gestos confirmados por Sergio | Demonstração, ensaio, três dificuldades por exercício |
-| F4 Adaptação e sessão | Publicada e verificada; aguarda sessão completa no celular | Sessão diária completa sem intervenção manual |
-| F5 Painel, diário e demais exercícios | Não iniciada | Quatro visões com dados reais e conferência de sete dias simulados |
+| F4 Adaptação e sessão | Concluída; sessão completa aprovada por Sergio | Sessão diária completa sem intervenção manual |
+| F5 Painel, diário e demais exercícios | Em desenvolvimento | Quatro visões com dados reais e conferência de sete dias simulados |
 | F6 Polimento e pessoas | Não iniciada | Sem bloqueios graves; acessibilidade manual; acompanhamento de quatro semanas |
 
 ## F0 — preparado
@@ -166,7 +166,7 @@ O portão da F3 foi aprovado por Sergio; a F4 foi iniciada após essa confirmaç
 - [x] Sugestão de dia leve após duas quedas consecutivas entre três dias de prática; aviso de pausa após quinze minutos em primeiro plano.
 - [x] Migração v4 → v5, exportação JSON de adaptação, domínio, sessões diárias e diário.
 - [x] Verificação final, revisão visual e publicação da F4.
-- [ ] Sergio: completar uma sessão no celular, avaliar a condução e conferir retomada e fecho.
+- [x] Sergio: completar uma sessão no celular, avaliar a condução e conferir retomada e fecho.
 
 **Limites conscientes:** duração é aproximada, sem encerrar um gesto/rodada em andamento; fecho não obriga esperar um minuto. Demonstração, ensaio e pausas não contam no orçamento. Fechar pode perder até cinco segundos do contador; o cursor da atividade atual recomeça, preservando seus registros anteriores. Referência interrompida sempre recomeça por inteiro. Lembrete fica na página inicial, sem prometer notificações em segundo plano. Painel e consulta completa do diário permanecem F5.
 
@@ -187,3 +187,31 @@ O portão da F3 foi aprovado por Sergio; a F4 foi iniciada após essa confirmaç
 - Site público corresponde ao build local (`index-puGkiBiH.js`), com HTTP 200.
 - Conferência pública em Chromium 360×640 com relógio controlado: sessão diária iniciada, ensaio e aquecimento Alvos concluídos; JSON esquema 5 contém uma sessão diária, uma etapa concluída e dez movimentos, sem adaptação indevida pelo aquecimento. Retomada offline reabriu a referência na etapa 2/5. Nenhum erro JavaScript observado.
 - Documentação e roteiro de celular atualizados. F4 aguarda Sergio completar uma sessão e validar condução, duração e conforto; F5 não iniciada.
+
+## Retomada após pane elétrica — 2026-11-05
+- Repositório íntegro (`git fsck`), sem alterações pendentes na retomada; último commit `29044b5`.
+- Sergio confirmou que concluiu os testes antes da pane: “Aprovado e encerrado F4”. Portão F4 encerrado; F5 autorizada.
+- F5 em desenvolvimento: painel, consulta do diário, CSV completo, exclusão e exercícios Dedilhado, Ritmo, Classificar, Palavra no traço e Cópia de padrão. F6 não iniciada.
+
+## F5 — painel, diário e demais exercícios (0.6.0)
+- [x] Aprovação explícita da F4 por Sergio em 2026-11-05.
+- [x] Linha semanal com precisão ponderada, erros por 100 toques, intervalos/variação e correções; origens separadas.
+- [x] Mapa de domínio com estados textuais, precisão/desvio e destaques de teclas; referência nativa e comparação dia 1 × dia 28 por protocolo.
+- [x] Hábito por datas locais, sem duplicar dias; consulta do diário, média das notas e resultado associado quando disponível.
+- [x] Dedilhado, Ritmo, Classificar, Palavra no traço e Cópia de padrão pelo contrato comum, três degraus, demonstração e ensaio.
+- [x] CSV de todas as coleções, com proteção contra fórmulas; JSON integral mantendo esquema v5 e tabelas existentes.
+- [x] Exclusão preparada com desfazer e confirmação final; limpeza transacional sem apagar/recriar o banco.
+- [x] Variação fina descritiva para traços com amostragem suficiente, sem misturar alternativas ou toques separados.
+- [x] Verificações locais e revisão visual (detalhes abaixo); confirmação remota na publicação.
+- [ ] Publicar e conferir o site público.
+- [ ] Sergio: conferir painel/diário, cinco exercícios, exportação e preservação do histórico no celular.
+
+**Limites:** emulação não comprova conforto dos dedos, metrônomo percebido, precisão de traços ou leitor de tela real. A mão e o dedo são solicitados, não detectados. Ciclo diário F4 preservado; novos exercícios na biblioteca. Variação fina pode ficar sem medida por baixa frequência de eventos e não estima tremor clínico. Exclusão definitiva não tem restauração por importação. F6 não iniciada.
+
+## Evidências locais da F5 — 2026-11-05
+- TypeScript estrito e build 0.6.0 aprovados; 14 recursos locais, aproximadamente 269 KiB no precache.
+- Vitest: 36 aprovados; novas verificações cobrem sete dias, precisão ponderada, origens, semanas locais, intervalos, protocolo dia 28, CSV completo, rollback da exclusão, variação fina e destinos do traço.
+- Regressão Playwright completa: 29 fluxos aprovados em 360×640. Após os ajustes finais de traço/demonstração, oito fluxos da F5 aprovados novamente; execução remota completa ainda pendente.
+- Novos fluxos comprovam ensaios sem registro, confirmação ao soltar, ponteiro versus alternativas sem pontos artificiais, apoio no Ritmo, troca de regra, traço físico da palavra, padrão por toques, diário e CSV com sete dias simulados, exclusão final e leitura offline a 200%.
+- Capturas revisadas: exercícios, painel/mapa e texto a 200%. Ajustados título do ensaio, nomes dos dedos em uma coluna ampliada, contraste dos pontos do modelo e teclas cortadas nas bordas. Demonstrações incluem deslocamento de cartão, percurso sobre letras/pontos e pulso conforme o andamento.
+- Falhas encontradas nos testes: indicação offline em recarga corrigida com `serviceWorker.ready`; verificação do Ritmo passou a ordenar os registros por instante, pois UUID não é ordem cronológica. Nenhuma dessas falhas é declarada como teste aprovado antes da correção.

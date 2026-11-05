@@ -1,3 +1,4 @@
+import { traceVariation } from "../../core/traceVariation";
 import { useLayoutEffect, useRef, useState } from "preact/hooks";
 import content from "../../content/maos.json";
 import {
@@ -117,6 +118,7 @@ export function Trilha({
         points,
         details: {
           ...quality,
+          fineVariationPx: source === "pointer" ? traceVariation(points) : null,
           shape: plan.settings.shape,
           bandWidth: width,
           truncated: truncated.current,

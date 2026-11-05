@@ -1,4 +1,129 @@
 export const textos = {
+  traceFine: "Variação fina do traço (px)",
+  traceFineHelp:
+    "Variação em torno de uma média local do traço, reamostrada a cada 20 ms. Só aparece quando os eventos têm frequência suficiente. Não mede tremor clínico; compare no mesmo aparelho e exercício.",
+  chartLegend:
+    "Linha contínua: precisão (%). Linha tracejada: erros por 100 toques. Os valores estão descritos abaixo.",
+  evolution: "Minha evolução",
+  evolutionHelp:
+    "Seus registros neste aparelho. Compare práticas do mesmo tipo e no mesmo aparelho. As semanas começam na segunda-feira. No ritmo, intervalos acima de dez segundos são deixados de fora.",
+  weekly: "Linha da semana",
+  weekOf: "Semana de",
+  noData: "Ainda não há registros para esta visão.",
+  inputSource: "Forma de praticar",
+  sources: {
+    pointer: "Toques na tela",
+    keyboard: "Teclado físico",
+    accessible: "Acionamento acessível",
+  },
+  accuracyLabel: "Precisão",
+  errorsLabel: "Erros por 100 toques",
+  totalLabel: "Toques registrados",
+  rhythmLabel: "Intervalo médio entre ações (ms)",
+  variationLabel: "Variação dos intervalos (ms)",
+  correctionsLabel: "Ações em apagar (%)",
+  keyboardMap: "Mapa do teclado",
+  keyHelp:
+    "O estado e o desvio são calculados por forma de praticar. Pontaria é uma proporção do tamanho da tecla, sem conversão para milímetros.",
+  skillStates: { new: "Nova", training: "Em treino", mastered: "Dominada" },
+  keyGold: "Teclas de ouro",
+  keyPractice: "Teclas para praticar",
+  offsetLabel: "Desvio médio em tamanhos de tecla",
+  unavailable: "Sem medida",
+  nativeSeries: "Teste de referência",
+  nativeSeriesHelp:
+    "Somente testes completos com texto. Os erros são do texto final por 100 caracteres; o teclado do celular pode corrigir toques. Mantenha teclado e ajustes iguais.",
+  ppm: "Palavras por minuto",
+  comparison28: "Dia 1 e dia 28",
+  comparisonPending:
+    "A comparação aparecerá após testes nos dias 1 e 28 com o mesmo protocolo.",
+  habit: "Dias de prática",
+  habitHelp:
+    "Dias com sessão diária, lição ou exercício concluído. Várias práticas no mesmo dia contam uma vez.",
+  practiced: "Dias praticados nesta semana",
+  dayPracticed: "Praticou",
+  dayOpen: "Sem prática concluída",
+  handSummary: "Movimentos de mãos",
+  chooseHistoryExercise: "Exercício para consultar",
+  diaryMean: "Avaliação média das sessões (1 a 5)",
+  diaryPrecision: "Precisão do teclado nesta sessão",
+  diaryTitle: "Meu diário",
+  diaryHelp:
+    "Notas opcionais guardadas no fecho da sessão. Seu relato não permite concluir causas de mudanças no desempenho.",
+  diaryRating: "Avaliação de 1 a 5",
+  diaryPain: "Desconforto registrado",
+  diaryNoNote: "Sem anotação",
+  diaryNoRating: "Sem avaliação",
+  deleteTitle: "Apagar meus dados",
+  deleteHelp:
+    "Você pode exportar seus registros antes. A exclusão final apaga preferências e todo o histórico deste navegador. Arquivos já exportados continuam com você.",
+  deletePrepare: "Preparar exclusão",
+  deletePending:
+    "Nada foi apagado. Você pode desfazer esta preparação ou confirmar a exclusão definitiva.",
+  deleteUndo: "Desfazer preparação",
+  deleteConfirm: "Apagar definitivamente todos os dados",
+  deleteAcknowledge:
+    "Entendi que não poderei desfazer após a confirmação final",
+  deleteError:
+    "Não foi possível apagar. Seus dados foram preservados. Tente novamente.",
+  supported: "O celular está apoiado na mesa",
+  supportedHelp:
+    "Apoie o celular antes de praticar o ritmo. Só continue quando estiver firme e confortável.",
+  fingerNames: ["Polegar", "Indicador", "Médio", "Anelar", "Mínimo"],
+  fingerPrompt: "Toque com o dedo indicado:",
+  fingerHelp:
+    "Apoie a mão como for confortável. As zonas indicam dedos; o aplicativo não identifica qual dedo você usou.",
+  rhythmStart: "Começar o pulso",
+  rhythmHelp:
+    "Observe o pulso e alterne os lados ao soltar. Acompanhe sem pressa; não há perda de pontos. O primeiro toque marca o início do seu ritmo.",
+  rhythmPulse: "Pulso",
+  rhythmArea: "Lados do ritmo",
+  rhythmSides: ["Esquerda", "Direita"],
+  rhythmTarget: "Próximo lado:",
+  rhythmTempo: "Pulsos por minuto:",
+  classifyRules: ["Separe pelo grupo", "Agora separe pela primeira letra"],
+  classifyGroups: [
+    ["Frutas", "Ferramentas", "Cidades"],
+    ["Começa com vogal", "Começa com consoante"],
+  ],
+  classifyCards: [
+    "Abacate",
+    "Martelo",
+    "Recife",
+    "Banana",
+    "Alicate",
+    "Olinda",
+    "Amora",
+    "Serrote",
+    "Natal",
+    "Uva",
+    "Enxada",
+    "Aracaju",
+  ],
+  classifyHelp:
+    "Arraste o cartão até um grupo e solte. Se preferir, selecione o cartão e depois escolha o grupo pelos botões. A regra muda na metade.",
+  classifySelect: "Selecionar cartão",
+  classifyArea: "Área de classificação",
+  classifySelected: "Cartão selecionado. Escolha o grupo.",
+  wordTraceHelp:
+    "Ligue as letras da palavra com um único traço e solte. Comece na primeira letra. Os botões laterais movem a janela do teclado.",
+  wordTraceWords: ["asa", "sede", "casas"],
+  wordTracePrompt: "Forme a palavra:",
+  wordTraceArea: "Teclado para traçar a palavra",
+  wordTraceAlternative: "Formar palavra por botões",
+  wordTraceFinish: "Concluir palavra",
+  wordTraceClear: "Recomeçar palavra",
+  wordTraceAnswer: "Letras escolhidas:",
+  patternHelp:
+    "Observe os pontos ligados. Quando estiver pronto, esconda o modelo e reproduza a ordem de memória. Você pode tocar nos pontos ou ligá-los com um traço.",
+  patternHide: "Esconder e reproduzir",
+  patternReplay: "Observar o padrão novamente",
+  patternArea: "Pontos do padrão",
+  patternPoint: "Ponto",
+  patternFinish: "Conferir padrão",
+  patternClear: "Recomeçar padrão",
+  patternObserve: "Observe o caminho:",
+
   shortPractice: "Prática curta salva",
   dailyPlanTitle: "Seu plano de hoje",
   dailyTitle: "Uma sessão para hoje",
@@ -253,7 +378,7 @@ export const textos = {
   referenceAgain: "Repetir o teste",
   exportTitle: "Levar meus registros",
   exportHelp:
-    "O JSON contém todos os dados locais. O CSV desta etapa contém os testes e as lições no teclado nativo. O arquivo fica com você; o aplicativo não o envia.",
+    "O JSON contém todos os dados locais. O CSV contém todos os registros, identificados pela coleção; listas e detalhes ficam em JSON dentro das células. O arquivo fica com você; o aplicativo não o envia.",
   exportJson: "Exportar JSON",
   exportCsv: "Exportar CSV",
   exportDone: "Arquivo preparado. Confira os downloads do navegador.",
@@ -282,8 +407,20 @@ export const textos = {
     alvos: "Alvos",
     sequencia: "Sequência",
     gestos: "Gestos do dia a dia",
+    dedilhado: "Dedilhado",
+    ritmo: "Ritmo a duas mãos",
+    classificar: "Arrastar e classificar",
+    palavra: "Palavra no traço",
+    padrao: "Cópia de padrão",
   },
   motorDescriptions: {
+    dedilhado: "Toque nas zonas com o dedo indicado, na ordem apresentada.",
+    ritmo:
+      "Com o celular apoiado, alterne esquerda e direita acompanhando o pulso.",
+    classificar:
+      "Leve cada cartão ao grupo indicado. Observe quando a regra mudar.",
+    palavra: "Ligue as letras no teclado com um traço para formar uma palavra.",
+    padrao: "Observe um caminho entre pontos e depois o reproduza de memória.",
     trilha: "Siga o caminho com o dedo, do círculo de início até o de chegada.",
     alvos:
       "Toque no círculo que aparece, um de cada vez. O alvo espera por você.",
@@ -315,7 +452,7 @@ export const textos = {
   demoReady: "Demonstração concluída. Agora experimente.",
   demoAgain: "Ver de novo",
   startTrial: "Fazer ensaio",
-  trialTitle: "Um ensaio, sem compromisso.",
+  trialTitle: "Ensaio, no seu ritmo.",
   trialHelp:
     "Os movimentos do ensaio não são guardados. Experimente antes de começar o treino.",
   trialDone: "Ensaio feito.",

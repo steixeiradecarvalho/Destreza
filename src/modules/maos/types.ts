@@ -15,7 +15,16 @@ export interface ExerciseProps {
   onFinish: () => void;
 }
 export interface ExerciseModule {
-  id: "trilha" | "alvos" | "sequencia" | "gestos";
+  id:
+    | "trilha"
+    | "alvos"
+    | "sequencia"
+    | "gestos"
+    | "dedilhado"
+    | "ritmo"
+    | "classificar"
+    | "palavra"
+    | "padrao";
   parametros: (difficulty: 1 | 2 | 3) => Record<string, number | string>;
   preparar: (settings: MotorSettings) => ExercisePlan;
   rodar: ComponentType<ExerciseProps>;

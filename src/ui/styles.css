@@ -824,3 +824,180 @@ footer {
   border-radius: 8px;
   padding: 12px;
 }
+
+.history-block {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  margin-top: 20px;
+}
+h3 {
+  font-size: 1.1rem;
+  overflow-wrap: anywhere;
+}
+dl {
+  overflow-wrap: anywhere;
+}
+dd {
+  margin: 0 0 16px;
+  font-weight: 600;
+}
+.history-bar {
+  height: 16px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+}
+.history-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.skill-map {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 110px), 1fr));
+  gap: 12px;
+}
+.skill {
+  border: 2px solid var(--line);
+  padding: 8px;
+  border-radius: 10px;
+  overflow-wrap: anywhere;
+}
+.skill.mastered {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.skill.training {
+  border-style: dashed;
+}
+.skill summary {
+  cursor: pointer;
+  min-height: 64px;
+}
+.skill summary span {
+  display: block;
+}
+.practice-days {
+  padding-left: 24px;
+}
+.practice-days li {
+  margin-bottom: 12px;
+  overflow-wrap: anywhere;
+}
+.diary-note {
+  white-space: pre-wrap;
+}
+.finger-zones,
+.rhythm-zones {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.finger-zones button,
+.rhythm-zones button {
+  min-height: 96px;
+  padding: 12px;
+  text-align: center;
+}
+.rhythm-pulse {
+  padding: 20px;
+  background: var(--soft);
+  font-weight: 700;
+  text-align: center;
+}
+.drag-card {
+  border: 3px solid var(--accent);
+  touch-action: none;
+  user-select: none;
+}
+.dragging {
+  outline: 3px dashed var(--focus);
+}
+.classify-groups button {
+  min-height: 80px;
+  border: 3px dashed var(--accent);
+}
+.word-trace-window {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.trace-selection {
+  position: relative;
+  background: var(--surface);
+  touch-action: none;
+  user-select: none;
+}
+.word-trace-board {
+  width: 540px;
+  height: 210px;
+}
+.pattern-board {
+  width: 100%;
+  height: 300px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.trace-selection-lines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.trace-selection-lines polyline {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-linejoin: round;
+}
+.trace-letter {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  font-size: 1rem;
+}
+.pattern-board .trace-letter {
+  border-radius: 50%;
+}
+.weekly-chart {
+  width: 100%;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+.weekly-chart .accuracy-line {
+  stroke-width: 4;
+}
+.weekly-chart .errors-line {
+  stroke-dasharray: 5 5;
+}
+.classify-board {
+  position: relative;
+}
+.dragging {
+  position: relative;
+  z-index: 2;
+}
+select {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  min-height: 64px;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  margin: 12px 0 20px;
+}
+h2 {
+  overflow-wrap: anywhere;
+}
+.finger-zones {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr));
+}
+
+.trace-letter:disabled {
+  opacity: 1;
+}
