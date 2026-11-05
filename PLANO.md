@@ -9,7 +9,7 @@ Responsabilidade técnica: agente de desenvolvimento. Validação da experiênci
 | F2 Teclado nativo e níveis 7–12 | Concluída; teclado e exportação confirmados por Sergio | Referência repetível e exportável |
 | F3 Mãos 1, 2, 3 e 8 | Concluída; instruções e conforto dos gestos confirmados por Sergio | Demonstração, ensaio, três dificuldades por exercício |
 | F4 Adaptação e sessão | Concluída; sessão completa aprovada por Sergio | Sessão diária completa sem intervenção manual |
-| F5 Painel, diário e demais exercícios | Em desenvolvimento | Quatro visões com dados reais e conferência de sete dias simulados |
+| F5 Painel, diário e demais exercícios | Publicada e verificada; aguarda teste de Sergio no celular | Quatro visões com dados reais e conferência de sete dias simulados |
 | F6 Polimento e pessoas | Não iniciada | Sem bloqueios graves; acessibilidade manual; acompanhamento de quatro semanas |
 
 ## F0 — preparado
@@ -203,7 +203,7 @@ O portão da F3 foi aprovado por Sergio; a F4 foi iniciada após essa confirmaç
 - [x] Exclusão preparada com desfazer e confirmação final; limpeza transacional sem apagar/recriar o banco.
 - [x] Variação fina descritiva para traços com amostragem suficiente, sem misturar alternativas ou toques separados.
 - [x] Verificações locais e revisão visual (detalhes abaixo); confirmação remota na publicação.
-- [ ] Publicar e conferir o site público.
+- [x] Publicar e conferir o site público.
 - [ ] Sergio: conferir painel/diário, cinco exercícios, exportação e preservação do histórico no celular.
 
 **Limites:** emulação não comprova conforto dos dedos, metrônomo percebido, precisão de traços ou leitor de tela real. A mão e o dedo são solicitados, não detectados. Ciclo diário F4 preservado; novos exercícios na biblioteca. Variação fina pode ficar sem medida por baixa frequência de eventos e não estima tremor clínico. Exclusão definitiva não tem restauração por importação. F6 não iniciada.
@@ -215,3 +215,10 @@ O portão da F3 foi aprovado por Sergio; a F4 foi iniciada após essa confirmaç
 - Novos fluxos comprovam ensaios sem registro, confirmação ao soltar, ponteiro versus alternativas sem pontos artificiais, apoio no Ritmo, troca de regra, traço físico da palavra, padrão por toques, diário e CSV com sete dias simulados, exclusão final e leitura offline a 200%.
 - Capturas revisadas: exercícios, painel/mapa e texto a 200%. Ajustados título do ensaio, nomes dos dedos em uma coluna ampliada, contraste dos pontos do modelo e teclas cortadas nas bordas. Demonstrações incluem deslocamento de cartão, percurso sobre letras/pontos e pulso conforme o andamento.
 - Falhas encontradas nos testes: indicação offline em recarga corrigida com `serviceWorker.ready`; verificação do Ritmo passou a ordenar os registros por instante, pois UUID não é ordem cronológica. Nenhuma dessas falhas é declarada como teste aprovado antes da correção.
+
+## Publicação da F5 confirmada — 2026-11-05
+- Versão 0.6.0, commit de aplicação `fabced1`; https://github.com/steixeiradecarvalho/Destreza/actions/runs/42038303430 — build, 36 testes unitários, 29 testes de navegador e implantação aprovados na versão final.
+- Site público retorna HTTP 200 e corresponde ao build local (`index-CEJTg_az.js`).
+- Conferência pública em Chromium 360×640: quatro visões e diário disponíveis, nenhum histórico simulado inserido; nove exercícios na biblioteca; ensaio e prática de Dedilhado concluídos. JSON esquema 5 contém uma prática e dez movimentos acessíveis sem pontos inventados; ensaio ausente. Painel reaberto offline. Nenhum erro JavaScript observado.
+- O primeiro script de conferência pública acionou teclas sem aguardar a gravação e não concluiu a prática; corrigida a sincronização do script com os botões habilitados. A segunda execução completou a conferência acima, sem alteração do aplicativo.
+- F5 pronta para validação de Sergio no aparelho pelo roteiro do README. F6 não iniciada. Aprovação de F4 registrada; histórico e preferências não foram apagados para a atualização.
